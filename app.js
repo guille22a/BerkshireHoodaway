@@ -234,9 +234,11 @@ function renderHoldings() {
   brkhRow.innerHTML = `
     <td class="py-4 px-4">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full bg-amber-500/20 border border-amber-400/40 flex items-center justify-center font-serif-vintage font-bold text-amber-300 text-lg">
-          $B
-        </div>
+        <img
+          src="assets/warren-hood.jpg"
+          alt="${state.ticker}"
+          class="w-10 h-10 rounded-full border-2 border-amber-400/80 object-cover bg-amber-500/20 shadow-md shadow-amber-500/20"
+        />
         <div>
           <div class="font-bold text-white flex items-center gap-2">
             ${state.ticker} <span class="text-xs px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Native Treasury Token</span>
