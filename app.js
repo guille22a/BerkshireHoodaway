@@ -229,7 +229,9 @@ function renderHoldings() {
           <div class="font-bold text-white flex items-center gap-2">
             ${state.ticker} <span class="text-xs px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Native Treasury Token</span>
           </div>
-          <div class="text-xs text-slate-400 font-mono">0x446B...89a2 (Robinhood Chain / PONS)</div>
+          <div class="text-xs text-slate-400 font-mono">
+            <a href="https://www.ponsfamily.com/launchpad/0xCB0D33f1A97046987eEDb8a0A907C62165A25f15" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 underline decoration-emerald-500/40">0xCB0D...5f15</a> (Robinhood Chain / PONS)
+          </div>
         </div>
       </div>
     </td>

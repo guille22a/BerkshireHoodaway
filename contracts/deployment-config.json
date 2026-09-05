@@ -4,7 +4,7 @@
   "chainId": 4663,
   "blockExplorer": "https://robinhoodchain.blockscout.com",
   "routerAddress": "0xe33e9e479df8802cb0866d5d05258bec4cf62948",
-  "hoodTokenAddress": "PASTE_YOUR_DEPLOYED_BRKHOOD_TOKEN_ADDRESS_HERE",
+  "hoodTokenAddress": "0xCB0D33f1A97046987eEDb8a0A907C62165A25f15",
   
   "dayOneInitialPortfolio": {
     "description": "Day 1 curated meme basket (10 tokens at 10% each). Activates IMMEDIATELY upon deployment with zero timelock wait.",
