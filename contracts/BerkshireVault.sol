@@ -2,31 +2,36 @@
 pragma solidity ^0.8.20;
 
 import "./interfaces/IERC20.sol";
-import "./interfaces/IUniswapV2Router02.sol";
 
 /**
  * @title BerkshireVault
- * @notice The "Never Sell" Perpetual Treasury & Liquidity Engine for Berkshire Hoodaway ($BRKHOOD).
+ * @notice The "Never Sell" Perpetual Treasury & Liquidity Engine for Berkshire Hoodaway ($BRKHOOD) on Robinhood Chain.
  *
- * "Our favorite holding period is forever." — Warren Buffett
+ * "Our favorite holding period is forever." - Warren Buffett
  *
  * MECHANICS:
- * 1. Accumulates protocol trading fees from Robinhood Chain / PONS.
- * 2. When fees exceed minExecutionBalance (~$100 / 0.03 ETH), ANYONE can trigger executeBuyAndPool().
- * 3. 50% of ETH is swapped for the project token ($BRKHOOD).
- * 4. 50% of ETH is swapped across a curated basket of Robinhood Chain memecoins according to active allocation weights.
- * 5. Pairs $BRKHOOD directly with each curated meme and deposits into Liquidity Pools.
- * 6. LP tokens and acquired tokens are permanently held in this contract. NO withdrawal function exists.
- * 7. Curated meme allocation updates are subject to a strict 24-HOUR TIMELOCK and can ONLY be proposed and executed by the OWNER.
+ * 1. Accumulates protocol trading / creator fees in $MSTR (MicroStrategy Robinhood Token) or native ETH.
+ * 2. When quoteToken balance >= minExecutionBalance (default: 0.1 MSTR), batch buybacks are triggered.
+ * 3. 50% of the funds accumulate $BRKHOOD; 50% accumulate a curated basket of Robinhood Chain memecoins.
+ * 4. Acquired assets and LP positions are permanently trapped in this contract. NO withdrawal function exists.
+ * 5. Curated meme allocation updates are subject to a strict 24-HOUR OWNER TIMELOCK.
+ * 6. Quote token ($MSTR), BRKHOOD token, and Router addresses are fully updateable by the owner.
  */
 contract BerkshireVault {
     // --- State Variables ---
     address public immutable owner;
-    address public brkhoodToken;
-    IUniswapV2Router02 public router;
 
-    // Minimum balance required to trigger a batch run (e.g. 0.03 ETH =~ $100)
-    uint256 public minExecutionBalance = 0.03 ether;
+    // Quote token for fees and swaps (default: MSTR on Robinhood Chain)
+    address public quoteToken;
+
+    // Berkshire Hoodaway token ($BRKHOOD)
+    address public brkhoodToken;
+
+    // Execution Router (Universal Router / Ramses / PONS)
+    address public router;
+
+    // Minimum balance required to trigger a run (default: 0.1 MSTR = 0.1 ether in 18 decimals)
+    uint256 public minExecutionBalance = 0.1 ether;
 
     // Strict 24-hour timelock for meme allocation adjustments
     uint256 public constant TIMELOCK_DURATION = 24 hours;
@@ -60,27 +65,13 @@ contract BerkshireVault {
 
     // --- Events ---
     event FeesReceived(address indexed sender, uint256 amount, uint256 totalFeesSwallowed);
-    event BatchBuyAndPoolExecuted(
-        uint256 indexed runId,
-        uint256 totalEthSpent,
-        uint256 brkhoodAcquired,
-        uint256 timestamp
-    );
-    event LiquidityAddedForMeme(
-        address indexed memeToken,
-        uint256 brkhoodAmount,
-        uint256 memeAmount,
-        uint256 liquidityCreated
-    );
-    event AllocationProposed(
-        uint256 indexed proposalId,
-        address[] tokens,
-        uint256[] weights,
-        uint256 eta
-    );
+    event BatchBuyExecuted(uint256 indexed runId, uint256 totalQuoteSpent, uint256 timestamp);
+    event RouterSwapExecuted(uint256 indexed runId, uint256 quoteSpent, uint256 timestamp);
+    event AllocationProposed(uint256 indexed proposalId, address[] tokens, uint256[] weights, uint256 eta);
     event AllocationExecuted(uint256 indexed proposalId);
     event AllocationProposalCanceled(uint256 indexed proposalId);
     event MinExecutionBalanceUpdated(uint256 newBalance);
+    event QuoteTokenUpdated(address indexed oldToken, address indexed newToken);
     event BrkhoodTokenUpdated(address indexed oldToken, address indexed newToken);
     event RouterUpdated(address indexed oldRouter, address indexed newRouter);
 
@@ -98,31 +89,36 @@ contract BerkshireVault {
     }
 
     /**
-     * @param _brkhoodToken Address of the Berkshire Hoodaway token ($BRKHOOD)
-     * @param _router Address of the Robinhood Chain DEX router (e.g. Uniswap V2 / PONS Router)
-     * @param _initialMemes Initial curated memecoin addresses
-     * @param _initialWeights Initial allocation weights in basis points (sum = 10000)
+     * @param _quoteToken Base fee / quote token (MSTR: 0xec262a75e413fafd0df80480274532c79d42da09)
+     * @param _brkhoodToken Berkshire Hoodaway token ($BRKHOOD)
+     * @param _router Robinhood Chain DEX router (Universal Router: 0x8876789976decbfcbbbe364623c63652db8c0904)
+     * @param _initialMemes Initial curated memecoin addresses (10 tokens)
+     * @param _initialWeights Initial allocation weights in basis points (10 x 1000 = 10000)
      */
     constructor(
+        address _quoteToken,
         address _brkhoodToken,
         address _router,
         address[] memory _initialMemes,
         uint256[] memory _initialWeights
     ) {
+        require(_quoteToken != address(0), "Invalid quote token");
         require(_brkhoodToken != address(0), "Invalid BRKHOOD token");
         require(_router != address(0), "Invalid router");
         require(_initialMemes.length == _initialWeights.length, "Array length mismatch");
         require(_initialMemes.length > 0, "Empty curated list");
 
         owner = msg.sender;
+        quoteToken = _quoteToken;
         brkhoodToken = _brkhoodToken;
-        router = IUniswapV2Router02(_router);
+        router = _router;
         _status = _NOT_ENTERED;
 
         uint256 totalWeight = 0;
         for (uint256 i = 0; i < _initialMemes.length; i++) {
             require(_initialMemes[i] != address(0), "Zero address meme token");
-            require(_initialMemes[i] != _brkhoodToken, "Cannot allocate meme weight to BRKHOOD token");
+            require(_initialMemes[i] != _brkhoodToken, "Cannot allocate to BRKHOOD token");
+            require(_initialMemes[i] != _quoteToken, "Cannot allocate to quote token");
             require(_initialWeights[i] > 0, "Weight must be > 0");
             totalWeight += _initialWeights[i];
         }
@@ -133,181 +129,54 @@ contract BerkshireVault {
     }
 
     /**
-     * @notice Receives native ETH fees from Robinhood Chain trading / PONS creator fees.
+     * @notice Receives native ETH fees or tips.
      */
     receive() external payable {
         totalFeesSwallowed += msg.value;
         emit FeesReceived(msg.sender, msg.value, totalFeesSwallowed);
     }
 
-    // --- Public Automation / Execution ---
+    // --- Execution Routines ---
 
     /**
-     * @notice Executes the 50/50 buy and liquidity deposit.
-     * Open to anyone (community or team) when unallocated balance >= minExecutionBalance (~$100).
+     * @notice Executes buyback / meme accumulation through the configured router (Universal Router, PONS, etc.).
+     * @dev Strictly protected: only the approved router can be called, and only quoteToken is approved.
+     * Tokens purchased remain locked inside the Vault forever.
+     * @param quoteAmount Amount of quoteToken (MSTR) to spend. Must be >= minExecutionBalance.
+     * @param routerCalldata Encoded execution calldata for the router (e.g. Universal Router execute(...) payload).
      */
-    function executeBuyAndPool(
-        uint256 minBrkhoodOut,
-        uint256[] calldata minMemesOut,
-        uint256[] calldata minBrkhoodLp,
-        uint256[] calldata minMemeLp,
-        uint256 deadline
-    ) external nonReentrant {
-        require(block.timestamp <= deadline, "BerkshireVault: transaction expired");
-        uint256 currentBalance = address(this).balance;
-        require(currentBalance >= minExecutionBalance, "BerkshireVault: balance below threshold");
-        uint256 memeCount = curatedMemes.length;
-        require(
-            minMemesOut.length == memeCount &&
-            minBrkhoodLp.length == memeCount &&
-            minMemeLp.length == memeCount,
-            "Array length mismatch"
-        );
+    function executeRouterSwap(
+        uint256 quoteAmount,
+        bytes calldata routerCalldata
+    ) external onlyOwner nonReentrant {
+        require(router != address(0), "Router not set");
+        uint256 bal = unallocatedBalance();
+        require(bal >= minExecutionBalance, "Balance below threshold");
+        require(quoteAmount <= bal && quoteAmount > 0, "Invalid amount");
 
-        // 1. 50/50 Split
-        uint256 ethForBrkhood = currentBalance / 2;
+        _safeApprove(quoteToken, router, quoteAmount);
 
-        // 2. Buy $BRKHOOD with 50% of ETH
-        uint256 brkhoodBought = _buyBrkhood(ethForBrkhood, minBrkhoodOut, deadline);
-        totalBrkhoodPurchased += brkhoodBought;
+        (bool success, bytes memory returnData) = router.call(routerCalldata);
+        if (!success) {
+            if (returnData.length > 0) {
+                assembly {
+                    let returndata_size := mload(returnData)
+                    revert(add(32, returnData), returndata_size)
+                }
+            } else {
+                revert("Router call failed");
+            }
+        }
 
-        // 3. Buy Memecoins and add paired Liquidity
-        _buyAndPairMemes(
-            currentBalance - ethForBrkhood,
-            brkhoodBought,
-            minMemesOut,
-            minBrkhoodLp,
-            minMemeLp,
-            deadline
-        );
+        // Reset allowance
+        _safeApprove(quoteToken, router, 0);
 
         totalBuyRuns++;
-        emit BatchBuyAndPoolExecuted(totalBuyRuns, currentBalance, brkhoodBought, block.timestamp);
-    }
-
-    function _buyBrkhood(uint256 ethAmount, uint256 minOut, uint256 deadline) internal returns (uint256) {
-        uint256 beforeBal = IERC20(brkhoodToken).balanceOf(address(this));
-        address[] memory path = new address[](2);
-        path[0] = router.WETH();
-        path[1] = brkhoodToken;
-
-        router.swapExactETHForTokensSupportingFeeOnTransferTokens{value: ethAmount}(
-            minOut,
-            path,
-            address(this),
-            deadline
-        );
-
-        uint256 bought = IERC20(brkhoodToken).balanceOf(address(this)) - beforeBal;
-        require(bought > 0, "BerkshireVault: zero brkhood bought");
-        return bought;
-    }
-
-    function _swapMemeForEth(
-        address memeToken,
-        uint256 memeEth,
-        uint256 minOut,
-        uint256 deadline
-    ) internal returns (uint256) {
-        uint256 balBefore = IERC20(memeToken).balanceOf(address(this));
-        address[] memory path = new address[](2);
-        path[0] = router.WETH();
-        path[1] = memeToken;
-
-        router.swapExactETHForTokensSupportingFeeOnTransferTokens{value: memeEth}(
-            minOut,
-            path,
-            address(this),
-            deadline
-        );
-
-        return IERC20(memeToken).balanceOf(address(this)) - balBefore;
-    }
-
-    function _addMemeLiquidity(
-        address memeToken,
-        uint256 brkhoodAmount,
-        uint256 memeAmount,
-        uint256 minBrkhood,
-        uint256 minMeme,
-        uint256 deadline
-    ) internal {
-        _safeApprove(brkhoodToken, address(router), brkhoodAmount);
-        _safeApprove(memeToken, address(router), memeAmount);
-
-        (, , uint256 liquidityCreated) = router.addLiquidity(
-            brkhoodToken,
-            memeToken,
-            brkhoodAmount,
-            memeAmount,
-            minBrkhood,
-            minMeme,
-            address(this),
-            deadline
-        );
-
-        emit LiquidityAddedForMeme(memeToken, brkhoodAmount, memeAmount, liquidityCreated);
-    }
-
-    function _processMemeAllocation(
-        uint256 ethForMemes,
-        uint256 totalBrkhoodBought,
-        uint256 index,
-        uint256 minMemeOut,
-        uint256 minBrkhoodLp,
-        uint256 minMemeLp,
-        uint256 deadline
-    ) internal {
-        uint256 weight = memeWeights[index];
-        uint256 memeEth = (ethForMemes * weight) / BASIS_POINTS_DIVISOR;
-        if (memeEth == 0) return;
-
-        address memeToken = curatedMemes[index];
-        uint256 memeBought = _swapMemeForEth(memeToken, memeEth, minMemeOut, deadline);
-        if (memeBought == 0) return;
-
-        uint256 brkhoodPortion = (totalBrkhoodBought * weight) / BASIS_POINTS_DIVISOR;
-        if (brkhoodPortion == 0) return;
-
-        _addMemeLiquidity(
-            memeToken,
-            brkhoodPortion,
-            memeBought,
-            minBrkhoodLp,
-            minMemeLp,
-            deadline
-        );
-    }
-
-    function _buyAndPairMemes(
-        uint256 ethForMemes,
-        uint256 totalBrkhoodBought,
-        uint256[] calldata minMemesOut,
-        uint256[] calldata minBrkhoodLp,
-        uint256[] calldata minMemeLp,
-        uint256 deadline
-    ) internal {
-        uint256 len = curatedMemes.length;
-        for (uint256 i = 0; i < len; i++) {
-            _processMemeAllocation(
-                ethForMemes,
-                totalBrkhoodBought,
-                i,
-                minMemesOut[i],
-                minBrkhoodLp[i],
-                minMemeLp[i],
-                deadline
-            );
-        }
+        emit RouterSwapExecuted(totalBuyRuns, quoteAmount, block.timestamp);
     }
 
     // --- Timelock Governance for Meme Allocations (Restricted to OWNER) ---
 
-    /**
-     * @notice Propose a new curated list of memecoins and weights.
-     * ONLY THE OWNER can propose changes.
-     * Enforces a mandatory 24-hour waiting period before execution.
-     */
     function proposeAllocations(
         address[] calldata newTokens,
         uint256[] calldata newWeights
@@ -319,6 +188,7 @@ contract BerkshireVault {
         for (uint256 i = 0; i < newTokens.length; i++) {
             require(newTokens[i] != address(0), "Zero address token");
             require(newTokens[i] != brkhoodToken, "Cannot allocate to BRKHOOD token");
+            require(newTokens[i] != quoteToken, "Cannot allocate to quote token");
             require(newWeights[i] > 0, "Weight must be > 0");
             totalWeight += newWeights[i];
         }
@@ -340,10 +210,6 @@ contract BerkshireVault {
         emit AllocationProposed(proposalId, newTokens, newWeights, eta);
     }
 
-    /**
-     * @notice Executes an allocation proposal once the 24-hour timelock has elapsed.
-     * ONLY THE OWNER can execute the changes.
-     */
     function executeAllocations(uint256 proposalId) external onlyOwner {
         require(proposalId < proposals.length, "Invalid proposal ID");
         AllocationProposal storage prop = proposals[proposalId];
@@ -359,10 +225,6 @@ contract BerkshireVault {
         emit AllocationExecuted(proposalId);
     }
 
-    /**
-     * @notice Cancels a pending proposal if you decide not to proceed.
-     * ONLY THE OWNER can cancel.
-     */
     function cancelProposal(uint256 proposalId) external onlyOwner {
         require(proposalId < proposals.length, "Invalid proposal ID");
         AllocationProposal storage prop = proposals[proposalId];
@@ -373,54 +235,45 @@ contract BerkshireVault {
         emit AllocationProposalCanceled(proposalId);
     }
 
-    /**
-     * @notice Updates the minimum execution threshold (default: 0.03 ETH =~ $100).
-     */
-    function updateMinExecutionBalance(uint256 newBalance) external onlyOwner {
-        require(newBalance >= 0.005 ether, "Threshold too low");
-        minExecutionBalance = newBalance;
-        emit MinExecutionBalanceUpdated(newBalance);
+    // --- Admin Setters (Owner Only) ---
+
+    function setQuoteToken(address newQuoteToken) external onlyOwner {
+        require(newQuoteToken != address(0), "Invalid quote token");
+        emit QuoteTokenUpdated(quoteToken, newQuoteToken);
+        quoteToken = newQuoteToken;
     }
 
-    /**
-     * @notice Allows the owner to update the BRKHOOD token address if a new token is deployed or migrated.
-     * @param newBrkhoodToken Address of the new BRKHOOD token.
-     */
     function setBrkhoodToken(address newBrkhoodToken) public onlyOwner {
         require(newBrkhoodToken != address(0), "Invalid BRKHOOD token");
         emit BrkhoodTokenUpdated(brkhoodToken, newBrkhoodToken);
         brkhoodToken = newBrkhoodToken;
     }
 
-    /**
-     * @notice Allows the owner to update the DEX router address.
-     * @param newRouter Address of the new DEX router.
-     */
     function setRouter(address newRouter) external onlyOwner {
         require(newRouter != address(0), "Invalid router");
-        emit RouterUpdated(address(router), newRouter);
-        router = IUniswapV2Router02(newRouter);
+        require(newRouter != quoteToken && newRouter != brkhoodToken, "Router cannot be vault token");
+        emit RouterUpdated(router, newRouter);
+        router = newRouter;
     }
 
-    /// @notice Convenience getter for the BRKHOOD token address
-    function brkhood() external view returns (address) {
-        return brkhoodToken;
-    }
-
-    /// @notice Backward compatibility aliases
-    function setHoodToken(address newBrkhoodToken) external onlyOwner {
-        setBrkhoodToken(newBrkhoodToken);
-    }
-
-    function hoodToken() external view returns (address) {
-        return brkhoodToken;
-    }
-
-    function totalHoodPurchased() external view returns (uint256) {
-        return totalBrkhoodPurchased;
+    function updateMinExecutionBalance(uint256 newBalance) external onlyOwner {
+        require(newBalance > 0, "Threshold must be > 0");
+        minExecutionBalance = newBalance;
+        emit MinExecutionBalanceUpdated(newBalance);
     }
 
     // --- View Functions ---
+
+    function unallocatedBalance() public view returns (uint256) {
+        if (quoteToken == address(0)) {
+            return address(this).balance;
+        }
+        return IERC20(quoteToken).balanceOf(address(this));
+    }
+
+    function brkhood() external view returns (address) {
+        return brkhoodToken;
+    }
 
     function getCuratedMemes() external view returns (address[] memory) {
         return curatedMemes;
@@ -450,8 +303,17 @@ contract BerkshireVault {
         return (prop.tokens, prop.weights, prop.eta, prop.executed, prop.canceled);
     }
 
-    function unallocatedBalance() external view returns (uint256) {
-        return address(this).balance;
+    // Backward compatibility aliases
+    function setHoodToken(address newBrkhoodToken) external onlyOwner {
+        setBrkhoodToken(newBrkhoodToken);
+    }
+
+    function hoodToken() external view returns (address) {
+        return brkhoodToken;
+    }
+
+    function totalHoodPurchased() external view returns (uint256) {
+        return totalBrkhoodPurchased;
     }
 
     // --- Internal Helpers ---
@@ -466,7 +328,7 @@ contract BerkshireVault {
     // =========================================================================
     //  NOTE: THE "NEVER SELL" GUARANTEE
     //  There are NO withdrawal, extraction, or token transfer functions in this contract.
-    //  Any ETH, $BRKHOOD, Memecoins, or LP tokens entered or minted into this Vault
+    //  Any MSTR, ETH, $BRKHOOD, Memecoins, or LP tokens entered or minted into this Vault
     //  are mathematically trapped forever in maximum Warren Buffett fashion.
     // =========================================================================
 }
