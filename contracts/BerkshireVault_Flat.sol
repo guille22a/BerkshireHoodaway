@@ -178,6 +178,15 @@ contract BerkshireVault {
         emit FeesReceived(msg.sender, msg.value, totalFeesSwallowed);
     }
 
+    // Parameter struct to eliminate EVM stack depth limits
+    struct ExecutionParams {
+        uint256 minHoodOut;
+        uint256[] minMemesOut;
+        uint256[] minHoodLp;
+        uint256[] minMemeLp;
+        uint256 deadline;
+    }
+
     // --- Public Automation / Execution ---
 
     /**
@@ -195,7 +204,12 @@ contract BerkshireVault {
         uint256 currentBalance = address(this).balance;
         require(currentBalance >= minExecutionBalance, "BerkshireVault: balance below threshold");
         uint256 memeCount = curatedMemes.length;
-        require(minMemesOut.length == memeCount && minHoodLp.length == memeCount && minMemeLp.length == memeCount, "Array length mismatch");
+        require(
+            minMemesOut.length == memeCount &&
+            minHoodLp.length == memeCount &&
+            minMemeLp.length == memeCount,
+            "Array length mismatch"
+        );
 
         // 1. 50/50 Split
         uint256 ethForHood = currentBalance / 2;
@@ -206,7 +220,15 @@ contract BerkshireVault {
         totalHoodPurchased += hoodBought;
 
         // 3. Buy Memecoins and add paired Liquidity
-        _buyAndPairMemes(ethForMemes, hoodBought, minMemesOut, minHoodLp, minMemeLp, deadline);
+        ExecutionParams memory params = ExecutionParams({
+            minHoodOut: minHoodOut,
+            minMemesOut: minMemesOut,
+            minHoodLp: minHoodLp,
+            minMemeLp: minMemeLp,
+            deadline: deadline
+        });
+
+        _buyAndPairMemes(ethForMemes, hoodBought, params);
 
         totalBuyRuns++;
         emit BatchBuyAndPoolExecuted(totalBuyRuns, currentBalance, hoodBought, block.timestamp);
@@ -233,10 +255,7 @@ contract BerkshireVault {
     function _buyAndPairMemes(
         uint256 ethForMemes,
         uint256 totalHoodBought,
-        uint256[] calldata minMemesOut,
-        uint256[] calldata minHoodLp,
-        uint256[] calldata minMemeLp,
-        uint256 deadline
+        ExecutionParams memory params
     ) internal {
         address weth = router.WETH();
         uint256 memeCount = curatedMemes.length;
@@ -253,10 +272,10 @@ contract BerkshireVault {
             path[1] = memeToken;
 
             router.swapExactETHForTokensSupportingFeeOnTransferTokens{value: memeEth}(
-                minMemesOut[i],
+                params.minMemesOut[i],
                 path,
                 address(this),
-                deadline
+                params.deadline
             );
 
             uint256 memeBought = IERC20(memeToken).balanceOf(address(this)) - balBefore;
@@ -273,10 +292,10 @@ contract BerkshireVault {
                 memeToken,
                 hoodPortion,
                 memeBought,
-                minHoodLp[i],
-                minMemeLp[i],
+                params.minHoodLp[i],
+                params.minMemeLp[i],
                 address(this),
-                deadline
+                params.deadline
             );
 
             emit LiquidityAddedForMeme(memeToken, hoodPortion, memeBought, liquidityCreated);
