@@ -146,27 +146,61 @@ contract BerkshireVault {
         require(_quoteToken != address(0), "Invalid quote token");
         require(_brkhoodToken != address(0), "Invalid BRKHOOD token");
         require(_router != address(0), "Invalid router");
-        require(_initialMemes.length == _initialWeights.length, "Array length mismatch");
-        require(_initialMemes.length > 0, "Empty curated list");
-
         owner = msg.sender;
         quoteToken = _quoteToken;
         brkhoodToken = _brkhoodToken;
         router = _router;
         _status = _NOT_ENTERED;
 
-        uint256 totalWeight = 0;
-        for (uint256 i = 0; i < _initialMemes.length; i++) {
-            require(_initialMemes[i] != address(0), "Zero address meme token");
-            require(_initialMemes[i] != _brkhoodToken, "Cannot allocate to BRKHOOD token");
-            require(_initialMemes[i] != _quoteToken, "Cannot allocate to quote token");
-            require(_initialWeights[i] > 0, "Weight must be > 0");
-            totalWeight += _initialWeights[i];
+        if (_initialMemes.length == 0) {
+            _initDefaultDayOneMemes();
+        } else {
+            require(_initialMemes.length == _initialWeights.length, "Array length mismatch");
+            uint256 totalWeight = 0;
+            for (uint256 i = 0; i < _initialMemes.length; i++) {
+                require(_initialMemes[i] != address(0), "Zero address meme token");
+                require(_initialMemes[i] != _brkhoodToken, "Cannot allocate to BRKHOOD token");
+                require(_initialMemes[i] != _quoteToken, "Cannot allocate to quote token");
+                require(_initialWeights[i] > 0, "Weight must be > 0");
+                totalWeight += _initialWeights[i];
+            }
+            if (totalWeight == BASIS_POINTS_DIVISOR) {
+                curatedMemes = _initialMemes;
+                memeWeights = _initialWeights;
+            } else if (totalWeight == 1000) {
+                curatedMemes = _initialMemes;
+                for (uint256 i = 0; i < _initialWeights.length; i++) {
+                    memeWeights.push(_initialWeights[i] * 10);
+                }
+            } else if (totalWeight == 100) {
+                curatedMemes = _initialMemes;
+                for (uint256 i = 0; i < _initialWeights.length; i++) {
+                    memeWeights.push(_initialWeights[i] * 100);
+                }
+            } else {
+                revert("Weights must sum to 10000 (or 1000, or 100)");
+            }
         }
-        require(totalWeight == BASIS_POINTS_DIVISOR, "Weights must sum to 10000");
+    }
 
-        curatedMemes = _initialMemes;
-        memeWeights = _initialWeights;
+    function _initDefaultDayOneMemes() internal {
+        address[10] memory defaultTokens = [
+            0xD5f1afEA47b1A9eab414D2ee740cF1d6d039E725,
+            0x0fF9072a1EAD154d92C2d2Fef16AFba6028Ce2B2,
+            0x2E8c31162b855A2ffa90F6F8634643Ad6F111e18,
+            0x020bfC650A365f8BB26819deAAbF3E21291018b4,
+            0xded852De9fe9bA9b6f27f39e8e81CF851A5C79cc,
+            0xD9dB30BB0D2b8d2eae3826A1372117E058791e18,
+            0xAfe41f4356c24f716111DE1fbbC84e061D291E18,
+            0x16391C40e85FB2246A2C8c17bfA2594C5d3EF84b,
+            0x98096d17e191B3dA1d5f99a6D7b3584351b11E18,
+            0x39dBED3a2bd333467115dE45665cC57F813C4571
+        ];
+
+        for (uint256 i = 0; i < 10; i++) {
+            curatedMemes.push(defaultTokens[i]);
+            memeWeights.push(1000);
+        }
     }
 
     /**
