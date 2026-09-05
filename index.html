@@ -38,7 +38,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css?v=2.0.6">
+  <link rel="stylesheet" href="styles.css?v=2.0.7">
 </head>
 
 <body class="bg-omaha-950 text-slate-100 selection:bg-emerald-500 selection:text-black">
@@ -266,9 +266,15 @@
             Unallocated Vault Fees: <span class="text-gold-400 font-mono" id="unallocated-mstr">0.0000 MSTR</span> <span class="text-sm font-mono text-slate-400" id="unallocated-usd">($0.00)</span>
           </h3>
 
-          <p class="text-sm text-slate-300 leading-relaxed max-w-2xl">
-            Anyone in the community can execute the 50/50 Buy & Pool once fees reach <strong>0.1 MSTR</strong> ($MSTR MicroStrategy token on Robinhood Chain). The contract swaps 50% for <strong>$BRKHOOD</strong> and 50% across <strong>curated memes</strong>, builds direct LPs, and locks them forever. Protected by <strong>5% max slippage</strong> against MEV sandwich attacks.
+          <p class="text-sm text-slate-300 leading-relaxed max-w-2xl mb-3">
+            The Iron Vault continuously accumulates trading fees in <strong>$MSTR</strong> directly from live trades. When triggered, the contract swaps 50% for <strong>$BRKHOOD</strong> and 50% across <strong>curated memes</strong>, builds direct LP pairs, and permanently locks them with <strong>5% max slippage</strong> protection.
           </p>
+
+          <!-- Post-Graduation Notice -->
+          <div class="inline-flex items-start sm:items-center gap-2 p-2.5 sm:px-3 sm:py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-mono">
+            <i data-lucide="info" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5 sm:mt-0"></i>
+            <span><strong>Graduation Notice:</strong> Fees accumulate continuously on-chain during the PONS launchpad phase. Vault Buy & Pool execution activates upon token graduation into open DEX liquidity pools.</span>
+          </div>
         </div>
 
         <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end">
@@ -277,7 +283,7 @@
             <span>TRIGGER VAULT BUY & POOL</span>
           </button>
           <div class="text-[11px] font-mono text-slate-400 text-center">
-            Gas paid on Robinhood Chain is &lt; $0.01 (Arbitrum Nitro)
+            Accumulating live on Robinhood Chain (Gas &lt; $0.01)
           </div>
         </div>
 
@@ -789,10 +795,21 @@
         </div>
       </div>
 
+      <!-- Graduation Status Notice -->
+      <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] font-mono leading-relaxed mb-5">
+        <div class="flex items-center gap-1.5 font-bold mb-0.5">
+          <i data-lucide="info" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>PONS Bonding Curve Phase</span>
+        </div>
+        <div class="text-slate-300">
+          Fees accumulate continuously in real-time. Direct DEX router buybacks and liquidity pool pair creation will execute automatically upon token graduation!
+        </div>
+      </div>
+
       <!-- Live Web3 Status Log Window -->
       <div id="exec-status-log" class="bg-omaha-950 p-3 rounded-xl border border-emerald-900/80 mb-5 min-h-[70px] max-h-[140px] overflow-y-auto text-slate-300 text-[11px] font-mono leading-relaxed">
         <div class="text-emerald-400 font-bold">● Vault Contract Ready on Robinhood Chain</div>
-        <div class="text-slate-400 mt-1">Connect your MetaMask wallet or execute directly on Robinhood Chain Blockscout.</div>
+        <div class="text-slate-400 mt-1">Connect your MetaMask wallet or inspect directly on Robinhood Chain Blockscout.</div>
       </div>
 
       <!-- Action Buttons -->
@@ -804,12 +821,12 @@
 
         <a href="https://robinhoodchain.blockscout.com/address/0x91105C8ED3bF8A2E21d1514314f62fa5ea614352#write-contract" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl font-mono font-bold text-xs bg-omaha-900 hover:bg-omaha-800 text-gold-300 border border-gold-400/40 transition-all flex items-center justify-center gap-2">
           <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-          <span>Execute on Blockscout Explorer (Write Contract)</span>
+          <span>Inspect on Blockscout Explorer (Write Contract)</span>
         </a>
 
-        <a href="https://robinhoodchain.blockscout.com/address/0x91105C8ED3bF8A2E21d1514314f62fa5ea614352#write-contract" target="_blank" rel="noopener noreferrer" class="w-full py-2 px-3 rounded-lg font-mono text-[11px] text-slate-400 hover:text-emerald-300 text-center block transition-colors">
-          Owner setting: call <span class="text-gold-400">setBrkhoodToken(0xB1feD2...)</span> on Explorer ↗
-        </a>
+        <div class="w-full py-2 px-3 rounded-lg font-mono text-[11px] text-emerald-400 bg-emerald-950/40 border border-emerald-500/20 text-center block">
+          ✓ Vault token officially linked to <span class="font-bold">0xB1feD2...</span> on Robinhood Chain
+        </div>
       </div>
 
     </div>
@@ -857,7 +874,7 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="app.js?v=2.0.6"></script>
+  <script src="app.js?v=2.0.7"></script>
   <script>
     // Initialize Lucide Icons
     lucide.createIcons();
