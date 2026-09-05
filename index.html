@@ -48,7 +48,7 @@
     <div class="ticker-move">
       <span class="mx-4">★ BERKSHIRE HOODAWAY ($BRKHOOD) ★</span>
       <span class="mx-4 text-emerald-400">ROBINHOOD CHAIN L2 (ARBITRUM NITRO)</span>
-      <span class="mx-4">FEES SWALLOWED: 34.82 ETH ($114.9K+)</span>
+      <span class="mx-4 text-amber-300">FEES ACCUMULATE ON-CHAIN LIVE</span>
       <span class="mx-4 text-amber-300">HOLDING PERIOD: FOREVER</span>
       <span class="mx-4">50% $BRKHOOD / 50% CURATED MEMES</span>
       <span class="mx-4 text-red-400">ZERO WITHDRAWALS PERMITTED</span>
@@ -57,7 +57,7 @@
       <span class="mx-4">RULE NO. 1: NEVER SELL</span>
       <span class="mx-4">★ BERKSHIRE HOODAWAY ($BRKHOOD) ★</span>
       <span class="mx-4 text-emerald-400">ROBINHOOD CHAIN L2 (ARBITRUM NITRO)</span>
-      <span class="mx-4">FEES SWALLOWED: 34.82 ETH ($114.9K+)</span>
+      <span class="mx-4 text-amber-300">FEES ACCUMULATE ON-CHAIN LIVE</span>
       <span class="mx-4 text-amber-300">HOLDING PERIOD: FOREVER</span>
       <span class="mx-4">50% $BRKHOOD / 50% CURATED MEMES</span>
     </div>
@@ -96,6 +96,11 @@
 
       <!-- Header Action Buttons -->
       <div class="flex items-center gap-2.5 shrink-0">
+        <!-- Official X (Twitter) Link -->
+        <a href="https://x.com/Berkshire_Hood" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-omaha-900/80 hover:bg-omaha-800 border border-gold-400/30 hover:border-gold-400 text-gold-300 hover:text-white transition-all shadow-sm" title="Official X / Twitter">
+          <i data-lucide="twitter" class="w-4 h-4"></i>
+        </a>
+
         <!-- Secondary: Community Trigger Button -->
         <button id="trigger-btn" class="hidden sm:inline-flex items-center justify-center gap-1.5 h-9 sm:h-10 px-3.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-emerald-950/70 hover:bg-emerald-900/90 text-emerald-300 border border-emerald-500/40 hover:border-emerald-400 transition-all shadow-sm">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
@@ -207,19 +212,19 @@
         
         <div class="p-5 rounded-xl glass-panel border border-emerald-500/20">
           <div class="text-xs font-mono text-slate-400 uppercase tracking-wider mb-1">Total Fees Swallowed</div>
-          <div class="text-2xl sm:text-3xl font-black text-white font-mono" id="total-swallowed-eth">34.82 ETH</div>
-          <div class="text-xs font-mono text-emerald-400 mt-1" id="total-swallowed-usd">$114,900+</div>
+          <div class="text-2xl sm:text-3xl font-black text-white font-mono" id="total-swallowed-eth">0.00 ETH</div>
+          <div class="text-xs font-mono text-emerald-400 mt-1" id="total-swallowed-usd">$0.00</div>
         </div>
 
         <div class="p-5 rounded-xl glass-panel border border-emerald-500/20">
           <div class="text-xs font-mono text-slate-400 uppercase tracking-wider mb-1">Total Treasury Value</div>
-          <div class="text-2xl sm:text-3xl font-black text-gold-400 font-mono" id="total-vault-value">$206,900</div>
+          <div class="text-2xl sm:text-3xl font-black text-gold-400 font-mono" id="total-vault-value">$0</div>
           <div class="text-xs font-mono text-slate-400 mt-1">Locked in Perpetual LPs</div>
         </div>
 
         <div class="p-5 rounded-xl glass-panel border border-emerald-500/20">
           <div class="text-xs font-mono text-slate-400 uppercase tracking-wider mb-1">Total Buy & Pool Runs</div>
-          <div class="text-2xl sm:text-3xl font-black text-white font-mono" id="total-runs">114</div>
+          <div class="text-2xl sm:text-3xl font-black text-white font-mono" id="total-runs">0</div>
           <div class="text-xs font-mono text-emerald-400 mt-1">100% On-Chain & Verified</div>
         </div>
 
@@ -241,14 +246,14 @@
         
         <div class="lg:col-span-8">
           <div class="flex items-center gap-3 mb-2">
-            <span id="threshold-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
-              <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Ready to Trigger (>$100 in Fees)
+            <span id="threshold-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span> Accumulating Swap Fees ($0.00 / $100)
             </span>
             <span class="text-xs font-mono text-slate-400">Robinhood Chain DEX Execution</span>
           </div>
 
           <h3 class="font-serif-vintage text-2xl sm:text-3xl font-bold text-white mb-2">
-            Unallocated Vault Fees: <span class="text-gold-400 font-mono" id="unallocated-eth">0.0452 ETH</span> <span class="text-sm font-mono text-slate-400" id="unallocated-usd">($149.16)</span>
+            Unallocated Vault Fees: <span class="text-gold-400 font-mono" id="unallocated-eth">0.0000 ETH</span> <span class="text-sm font-mono text-slate-400" id="unallocated-usd">($0.00)</span>
           </h3>
 
           <p class="text-sm text-slate-300 leading-relaxed max-w-2xl">
@@ -388,7 +393,7 @@
         </div>
         <div class="text-right">
           <div class="text-xs font-mono text-slate-400 uppercase">Total Locked Portfolio</div>
-          <div class="text-2xl sm:text-3xl font-black text-emerald-400 font-mono" id="holdings-total-val">$206,900</div>
+          <div class="text-2xl sm:text-3xl font-black text-emerald-400 font-mono" id="holdings-total-val">$0</div>
         </div>
       </div>
 
@@ -449,77 +454,52 @@
         </div>
       </div>
 
-      <!-- Active Timelock Proposal Card -->
-      <div class="rounded-2xl parchment-card p-6 sm:p-8 border border-amber-500/40 shadow-2xl relative">
+      <!-- Timelock Event Card: Warren Cook -->
+      <div class="rounded-2xl parchment-card p-6 sm:p-8 border border-amber-500/30 shadow-2xl relative">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gold-400/20">
           
           <div>
             <div class="flex items-center gap-2 mb-2">
-              <span class="px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-mono font-bold uppercase">
-                Active Timelock Event (Owner Only)
+              <span class="px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-mono font-bold uppercase flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                Warren Cook
               </span>
-              <span class="text-xs font-mono text-slate-400" id="proposal-id">#003</span>
+              <span class="text-xs font-mono text-slate-400">24-Hour On-Chain Timelock</span>
             </div>
-            <h4 class="font-serif-vintage text-xl sm:text-2xl font-bold text-white" id="proposal-desc">
-              Incorporate $HOODSHIBA at 15% and rebalance $PEPEHOOD to 30%
+            <h4 class="font-serif-vintage text-xl sm:text-2xl font-bold text-white">
+              Portfolio Allocations Locked & Optimal
             </h4>
             <div class="text-xs font-mono text-slate-400 mt-1">
-              Proposed by: <span class="text-slate-300">0x438A...78c2 (Project Owner / Deployer)</span>
+              There are currently no new fee rebalances queued to display. All upcoming rebalances will be announced on <a href="https://x.com/Berkshire_Hood" target="_blank" rel="noopener noreferrer" class="text-gold-400 hover:text-white underline inline-flex items-center gap-0.5">X (@Berkshire_Hood) ↗</a>.
             </div>
           </div>
 
-          <!-- Countdown Box -->
-          <div class="bg-omaha-950/90 border border-amber-500/40 p-4 rounded-xl text-center min-w-[240px]">
+          <!-- Status Indicator Box -->
+          <div class="bg-omaha-950/90 border border-emerald-500/30 p-4 rounded-xl text-center min-w-[240px]">
             <div class="text-[11px] font-mono text-slate-400 uppercase mb-1 flex items-center justify-center gap-1">
-              <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i>
-              <span>Timelock Countdown</span>
+              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>Timelock Status</span>
             </div>
-            <div class="text-2xl sm:text-3xl font-mono font-black text-amber-300 tracking-wider" id="timelock-countdown">
-              14h 28m 45s
+            <div class="text-xl sm:text-2xl font-mono font-bold text-emerald-400 tracking-wide">
+              LET WARREN COOK
             </div>
-            <div class="text-[10px] font-mono text-emerald-400 mt-1">
-              Strictly executable by Owner only after delay
+            <div class="text-[10px] font-mono text-slate-400 mt-1">
+              10 Curated Memes Active • 10% Each
             </div>
           </div>
 
         </div>
 
-        <!-- Proposed Changes Breakdown -->
-        <div class="pt-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-          <div>
-            <span class="text-xs font-mono text-slate-400 uppercase tracking-wider block mb-3">
-              Proposed Target Weights:
-            </span>
-            <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 rounded bg-omaha-900 border border-emerald-500/30 text-xs font-mono text-emerald-300">
-                $PEPEHOOD (30%)
-              </span>
-              <span class="px-3 py-1 rounded bg-omaha-900 border border-emerald-500/30 text-xs font-mono text-emerald-300">
-                $DOGEHOOD (30%)
-              </span>
-              <span class="px-3 py-1 rounded bg-omaha-900 border border-emerald-500/30 text-xs font-mono text-emerald-300">
-                $ROBINCROP (15%)
-              </span>
-              <span class="px-3 py-1 rounded bg-omaha-900 border border-amber-400/40 text-xs font-mono text-gold-300 font-bold">
-                + $HOODSHIBA (15%) [NEW]
-              </span>
-              <span class="px-3 py-1 rounded bg-omaha-900 border border-emerald-500/30 text-xs font-mono text-emerald-300">
-                $PONSBUFF (10%)
-              </span>
-            </div>
+        <!-- Info Strip -->
+        <div class="pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs font-mono text-slate-300">
+          <div class="flex items-center gap-2">
+            <i data-lucide="twitter" class="w-4 h-4 text-gold-400 shrink-0"></i>
+            <span>Follow our official X handle for upcoming portfolio proposals and community polls:</span>
           </div>
-
-          <div>
-            <span class="text-xs font-mono text-slate-400 uppercase tracking-wider block mb-1">
-              On-Chain Calldata Hash:
-            </span>
-            <div class="p-2.5 rounded bg-omaha-950 font-mono text-[11px] text-slate-400 truncate border border-emerald-900/60" id="proposal-calldata">
-              0x892a7f100000000000000000000000000000000000000000000000000000000000000040...3a8b
-            </div>
-            <div class="text-[10px] font-mono text-slate-500 mt-1">
-              Guaranteed by smart contract code. Only the owner can execute or cancel this proposal.
-            </div>
-          </div>
+          <a href="https://x.com/Berkshire_Hood" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-gold-300 hover:text-white font-bold transition-colors inline-flex items-center gap-1.5 shrink-0">
+            <span>@Berkshire_Hood on X</span>
+            <i data-lucide="external-link" class="w-3 h-3"></i>
+          </a>
         </div>
 
       </div>
@@ -745,8 +725,8 @@
       </div>
 
       <div class="flex items-center gap-6 text-slate-300">
-        <a href="https://twitter.com" target="_blank" class="hover:text-gold-400 flex items-center gap-1">
-          <i data-lucide="twitter" class="w-4 h-4"></i> Twitter/X
+        <a href="https://x.com/Berkshire_Hood" target="_blank" rel="noopener noreferrer" class="hover:text-gold-400 flex items-center gap-1">
+          <i data-lucide="twitter" class="w-4 h-4"></i> Twitter/X (@Berkshire_Hood)
         </a>
         <a href="https://telegram.org" target="_blank" class="hover:text-gold-400 flex items-center gap-1">
           <i data-lucide="send" class="w-4 h-4"></i> Telegram

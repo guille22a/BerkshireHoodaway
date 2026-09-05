@@ -3,16 +3,16 @@
  * berkshirehood.fun
  */
 
-// Initial State (Simulated on-chain state & real Web3 ready)
+// Initial State (Day-0 Real Launch State)
 const state = {
   ticker: "$BRKHOOD",
-  unallocatedEth: 0.0452, // ~$149.16 (Over $100 threshold!)
+  unallocatedEth: 0.0, // Initial 0 ETH (accumulates from live swap fees)
   ethPriceUsd: 3300,
   minExecutionThresholdUsd: 100,
   slippagePct: 5.0, // 5% max slippage for low liquidity memecoins
-  totalFeesSwallowedEth: 34.82,
-  totalHoodLocked: 148500000,
-  totalRuns: 114,
+  totalFeesSwallowedEth: 0.0,
+  totalHoodLocked: 0,
+  totalRuns: 0,
   
   // Curated Memes Portfolio (Weights in Basis Points: 1,000 bps = 10% each, 10,000 total)
   curatedMemes: [
@@ -23,10 +23,10 @@ const state = {
       weightBps: 1000,
       icon: "assets/tokens/microduck.png",
       fallbackUrl: "https://cdn.dexscreener.com/cms/images/PRPmxR0LalitfHcU?width=800&height=800&quality=95&format=auto",
-      vaultBalance: "12,450,000",
-      valueUsd: 11490,
+      vaultBalance: "0",
+      valueUsd: 0,
       lpPair: "$BRKHOOD / $microduck LP",
-      lpLocked: "355,100 LP"
+      lpLocked: "0 LP"
     },
     {
       symbol: "$OPTIMUS",
@@ -35,10 +35,10 @@ const state = {
       weightBps: 1000,
       icon: "assets/tokens/OPTIMUS.png",
       fallbackUrl: "https://cdn.dexscreener.com/cms/images/C5szo6ViCnV-iF4g?width=800&height=800&quality=95&format=auto",
-      vaultBalance: "8,200,000",
-      valueUsd: 11490,
+      vaultBalance: "0",
+      valueUsd: 0,
       lpPair: "$BRKHOOD / $OPTIMUS LP",
-      lpLocked: "355,100 LP"
+      lpLocked: "0 LP"
     },
     {
       symbol: "$AI",
@@ -47,10 +47,10 @@ const state = {
       weightBps: 1000,
       icon: "assets/tokens/AI.png",
       fallbackUrl: "https://cdn.dexscreener.com/cms/images/U6RIzs8Fm7Jar6GE?width=800&height=800&quality=95&format=auto",
-      vaultBalance: "45,000,000",
-      valueUsd: 11490,
+      vaultBalance: "0",
+      valueUsd: 0,
       lpPair: "$BRKHOOD / $AI LP",
-      lpLocked: "355,100 LP"
+      lpLocked: "0 LP"
     },
     {
       symbol: "$CASHCAT",
@@ -59,10 +59,10 @@ const state = {
       weightBps: 1000,
       icon: "assets/tokens/CASHCAT.png",
       fallbackUrl: "https://cdn.dexscreener.com/cms/images/Lq7a3pS9Wn8EuGp0?width=800&height=800&quality=95&format=auto",
-      vaultBalance: "31,800,000",
-      valueUsd: 11490,
+      vaultBalance: "0",
+      valueUsd: 0,
       lpPair: "$BRKHOOD / $CASHCAT LP",
-      lpLocked: "355,100 LP"
+      lpLocked: "0 LP"
     },
     {
       symbol: "$ROBINCAT",
@@ -71,10 +71,10 @@ const state = {
       weightBps: 1000,
       icon: "assets/tokens/ROBINCAT.png",
       fallbackUrl: "https://cdn.dexscreener.com/cms/images/z94nZpUqjkDtqXSm?width=800&height=800&quality=95&format=auto",
-      vaultBalance: "19,500,000",
-      valueUsd: 11490,
+      vaultBalance: "0",
+      valueUsd: 0,
       lpPair: "$BRKHOOD / $ROBINCAT LP",
-      lpLocked: "355,100 LP"
+      lpLocked: "0 LP"
     },
     {
       symbol: "$MOO",
@@ -83,10 +83,10 @@ const state = {
       weightBps: 1000,
       icon: "assets/tokens/MOO.png",
       fallbackUrl: "https://cdn.dexscreener.com/cms/images/DXvCPLxceXnY_5XS?width=800&height=800&quality=95&format=auto",
-      vaultBalance: "62,100,000",
-      valueUsd: 11490,
+      vaultBalance: "0",
+      valueUsd: 0,
       lpPair: "$BRKHOOD / $MOO LP",
-      lpLocked: "355,100 LP"
+      lpLocked: "0 LP"
     },
     {
       symbol: "$CACHE",
@@ -95,10 +95,10 @@ const state = {
       weightBps: 1000,
       icon: "assets/tokens/CACHE.png",
       fallbackUrl: "https://cdn.dexscreener.com/cms/images/vWTr7ZrHaGAiFVXj?width=800&height=800&quality=95&format=auto",
-      vaultBalance: "27,400,000",
-      valueUsd: 11490,
+      vaultBalance: "0",
+      valueUsd: 0,
       lpPair: "$BRKHOOD / $CACHE LP",
-      lpLocked: "355,100 LP"
+      lpLocked: "0 LP"
     },
     {
       symbol: "$GRASS",
@@ -107,10 +107,10 @@ const state = {
       weightBps: 1000,
       icon: "assets/tokens/GRASS.png",
       fallbackUrl: "https://cdn.dexscreener.com/cms/images/_WUqhn710aynImSO?width=800&height=800&quality=95&format=auto",
-      vaultBalance: "88,900,000",
-      valueUsd: 11490,
+      vaultBalance: "0",
+      valueUsd: 0,
       lpPair: "$BRKHOOD / $GRASS LP",
-      lpLocked: "355,100 LP"
+      lpLocked: "0 LP"
     },
     {
       symbol: "$BONER",
@@ -119,10 +119,10 @@ const state = {
       weightBps: 1000,
       icon: "assets/tokens/BONER.png",
       fallbackUrl: "https://cdn.dexscreener.com/cms/images/zHSvsb5W3vIdMePa?width=800&height=800&quality=95&format=auto",
-      vaultBalance: "15,300,000",
-      valueUsd: 11490,
+      vaultBalance: "0",
+      valueUsd: 0,
       lpPair: "$BRKHOOD / $BONER LP",
-      lpLocked: "355,100 LP"
+      lpLocked: "0 LP"
     },
     {
       symbol: "$PONS",
@@ -131,29 +131,15 @@ const state = {
       weightBps: 1000,
       icon: "assets/tokens/PONS.png",
       fallbackUrl: "https://cdn.dexscreener.com/cms/images/dkmXs8KYMyMXjuU1?width=800&height=800&quality=95&format=auto",
-      vaultBalance: "5,400,000",
-      valueUsd: 11490,
+      vaultBalance: "0",
+      valueUsd: 0,
       lpPair: "$BRKHOOD / $PONS LP",
-      lpLocked: "355,100 LP"
+      lpLocked: "0 LP"
     }
   ],
 
-  // 24-Hour Timelock State (Strictly Owner Executable)
-  pendingProposal: {
-    id: "#003",
-    description: "Incorporate $HOODSHIBA at 15% and rebalance $PEPEHOOD to 30%",
-    proposedBy: "0x438A...78c2 (Project Owner / Deployer)",
-    targetEta: Date.now() + (14 * 3600 + 28 * 60 + 45) * 1000, // 14 hours 28 mins remaining
-    proposedTokens: [
-      { symbol: "$PEPEHOOD", weight: "30%" },
-      { symbol: "$DOGEHOOD", weight: "30%" },
-      { symbol: "$ROBINCROP", weight: "15%" },
-      { symbol: "$HOODSHIBA", weight: "15%" },
-      { symbol: "$PONSBUFF", weight: "10%" }
-    ],
-    calldata: "0x892a7f100000000000000000000000000000000000000000000000000000000000000040...3a8b",
-    status: "TIMELOCK_PENDING"
-  },
+  // 24-Hour Timelock State (No active proposals currently)
+  pendingProposal: null,
 
   // Warrenisms (Buffett Parody Quotes)
   warrenisms: [
@@ -369,6 +355,11 @@ function initTimelockCountdown() {
   const proposalIdEl = document.getElementById("proposal-id");
   const proposalDescEl = document.getElementById("proposal-desc");
   const proposalCalldataEl = document.getElementById("proposal-calldata");
+
+  if (!state.pendingProposal) {
+    if (countdownEl) countdownEl.innerText = "NO ACTIVE PROPOSALS";
+    return;
+  }
 
   if (proposalIdEl) proposalIdEl.innerText = state.pendingProposal.id;
   if (proposalDescEl) proposalDescEl.innerText = state.pendingProposal.description;
