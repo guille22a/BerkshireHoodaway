@@ -356,7 +356,7 @@ function renderInvestmentBoard() {
 
       <div class="pt-3 border-t border-emerald-900/40 flex items-center justify-between text-xs">
         <span class="text-slate-400 font-mono truncate max-w-[140px]">${meme.address}</span>
-        <a href="https://robinhood.evm.blockscout.com/address/${meme.address}" target="_blank" class="text-emerald-400 hover:text-emerald-300 underline">Explorer ↗</a>
+        <a href="https://robinhoodchain.blockscout.com/address/${meme.address}" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:text-emerald-300 underline">Explorer ↗</a>
       </div>
     `;
     weightsContainer.appendChild(card);
