@@ -62,7 +62,7 @@ interface IUniswapV2Router02 {
 contract BerkshireVault {
     // --- State Variables ---
     address public immutable owner;
-    address public hoodToken;
+    address public brkhoodToken;
     IUniswapV2Router02 public immutable router;
 
     // Minimum balance required to trigger a batch run (e.g. 0.03 ETH =~ $100)
@@ -91,7 +91,7 @@ contract BerkshireVault {
     // Lifetime Stats
     uint256 public totalFeesSwallowed;
     uint256 public totalBuyRuns;
-    uint256 public totalHoodPurchased;
+    uint256 public totalBrkhoodPurchased;
 
     // Reentrancy guard
     uint256 private _status;
@@ -103,12 +103,12 @@ contract BerkshireVault {
     event BatchBuyAndPoolExecuted(
         uint256 indexed runId,
         uint256 totalEthSpent,
-        uint256 hoodAcquired,
+        uint256 brkhoodAcquired,
         uint256 timestamp
     );
     event LiquidityAddedForMeme(
         address indexed memeToken,
-        uint256 hoodAmount,
+        uint256 brkhoodAmount,
         uint256 memeAmount,
         uint256 liquidityCreated
     );
@@ -121,7 +121,7 @@ contract BerkshireVault {
     event AllocationExecuted(uint256 indexed proposalId);
     event AllocationProposalCanceled(uint256 indexed proposalId);
     event MinExecutionBalanceUpdated(uint256 newBalance);
-    event HoodTokenUpdated(address indexed oldToken, address indexed newToken);
+    event BrkhoodTokenUpdated(address indexed oldToken, address indexed newToken);
 
     // --- Modifiers ---
     modifier onlyOwner() {
@@ -137,31 +137,31 @@ contract BerkshireVault {
     }
 
     /**
-     * @param _hoodToken Address of the Berkshire Hoodaway token ($BRKHOOD)
+     * @param _brkhoodToken Address of the Berkshire Hoodaway token ($BRKHOOD)
      * @param _router Address of the Robinhood Chain DEX router (e.g. Uniswap V2 / PONS Router)
      * @param _initialMemes Initial curated memecoin addresses
      * @param _initialWeights Initial allocation weights in basis points (sum = 10000)
      */
     constructor(
-        address _hoodToken,
+        address _brkhoodToken,
         address _router,
         address[] memory _initialMemes,
         uint256[] memory _initialWeights
     ) {
-        require(_hoodToken != address(0), "Invalid hood token");
+        require(_brkhoodToken != address(0), "Invalid BRKHOOD token");
         require(_router != address(0), "Invalid router");
         require(_initialMemes.length == _initialWeights.length, "Array length mismatch");
         require(_initialMemes.length > 0, "Empty curated list");
 
         owner = msg.sender;
-        hoodToken = _hoodToken;
+        brkhoodToken = _brkhoodToken;
         router = IUniswapV2Router02(_router);
         _status = _NOT_ENTERED;
 
         uint256 totalWeight = 0;
         for (uint256 i = 0; i < _initialMemes.length; i++) {
             require(_initialMemes[i] != address(0), "Zero address meme token");
-            require(_initialMemes[i] != _hoodToken, "Cannot allocate meme weight to hood token");
+            require(_initialMemes[i] != _brkhoodToken, "Cannot allocate meme weight to BRKHOOD token");
             require(_initialWeights[i] > 0, "Weight must be > 0");
             totalWeight += _initialWeights[i];
         }
@@ -186,9 +186,9 @@ contract BerkshireVault {
      * Open to anyone (community or team) when unallocated balance >= minExecutionBalance (~$100).
      */
     function executeBuyAndPool(
-        uint256 minHoodOut,
+        uint256 minBrkhoodOut,
         uint256[] calldata minMemesOut,
-        uint256[] calldata minHoodLp,
+        uint256[] calldata minBrkhoodLp,
         uint256[] calldata minMemeLp,
         uint256 deadline
     ) external nonReentrant {
@@ -198,37 +198,37 @@ contract BerkshireVault {
         uint256 memeCount = curatedMemes.length;
         require(
             minMemesOut.length == memeCount &&
-            minHoodLp.length == memeCount &&
+            minBrkhoodLp.length == memeCount &&
             minMemeLp.length == memeCount,
             "Array length mismatch"
         );
 
         // 1. 50/50 Split
-        uint256 ethForHood = currentBalance / 2;
+        uint256 ethForBrkhood = currentBalance / 2;
 
         // 2. Buy $BRKHOOD with 50% of ETH
-        uint256 hoodBought = _buyHood(ethForHood, minHoodOut, deadline);
-        totalHoodPurchased += hoodBought;
+        uint256 brkhoodBought = _buyBrkhood(ethForBrkhood, minBrkhoodOut, deadline);
+        totalBrkhoodPurchased += brkhoodBought;
 
         // 3. Buy Memecoins and add paired Liquidity
         _buyAndPairMemes(
-            currentBalance - ethForHood,
-            hoodBought,
+            currentBalance - ethForBrkhood,
+            brkhoodBought,
             minMemesOut,
-            minHoodLp,
+            minBrkhoodLp,
             minMemeLp,
             deadline
         );
 
         totalBuyRuns++;
-        emit BatchBuyAndPoolExecuted(totalBuyRuns, currentBalance, hoodBought, block.timestamp);
+        emit BatchBuyAndPoolExecuted(totalBuyRuns, currentBalance, brkhoodBought, block.timestamp);
     }
 
-    function _buyHood(uint256 ethAmount, uint256 minOut, uint256 deadline) internal returns (uint256) {
-        uint256 beforeBal = IERC20(hoodToken).balanceOf(address(this));
+    function _buyBrkhood(uint256 ethAmount, uint256 minOut, uint256 deadline) internal returns (uint256) {
+        uint256 beforeBal = IERC20(brkhoodToken).balanceOf(address(this));
         address[] memory path = new address[](2);
         path[0] = router.WETH();
-        path[1] = hoodToken;
+        path[1] = brkhoodToken;
 
         router.swapExactETHForTokensSupportingFeeOnTransferTokens{value: ethAmount}(
             minOut,
@@ -237,8 +237,8 @@ contract BerkshireVault {
             deadline
         );
 
-        uint256 bought = IERC20(hoodToken).balanceOf(address(this)) - beforeBal;
-        require(bought > 0, "BerkshireVault: zero hood bought");
+        uint256 bought = IERC20(brkhoodToken).balanceOf(address(this)) - beforeBal;
+        require(bought > 0, "BerkshireVault: zero brkhood bought");
         return bought;
     }
 
@@ -265,35 +265,35 @@ contract BerkshireVault {
 
     function _addMemeLiquidity(
         address memeToken,
-        uint256 hoodAmount,
+        uint256 brkhoodAmount,
         uint256 memeAmount,
-        uint256 minHood,
+        uint256 minBrkhood,
         uint256 minMeme,
         uint256 deadline
     ) internal {
-        _safeApprove(hoodToken, address(router), hoodAmount);
+        _safeApprove(brkhoodToken, address(router), brkhoodAmount);
         _safeApprove(memeToken, address(router), memeAmount);
 
         (, , uint256 liquidityCreated) = router.addLiquidity(
-            hoodToken,
+            brkhoodToken,
             memeToken,
-            hoodAmount,
+            brkhoodAmount,
             memeAmount,
-            minHood,
+            minBrkhood,
             minMeme,
             address(this),
             deadline
         );
 
-        emit LiquidityAddedForMeme(memeToken, hoodAmount, memeAmount, liquidityCreated);
+        emit LiquidityAddedForMeme(memeToken, brkhoodAmount, memeAmount, liquidityCreated);
     }
 
     function _processMemeAllocation(
         uint256 ethForMemes,
-        uint256 totalHoodBought,
+        uint256 totalBrkhoodBought,
         uint256 index,
         uint256 minMemeOut,
-        uint256 minHoodLp,
+        uint256 minBrkhoodLp,
         uint256 minMemeLp,
         uint256 deadline
     ) internal {
@@ -305,14 +305,14 @@ contract BerkshireVault {
         uint256 memeBought = _swapMemeForEth(memeToken, memeEth, minMemeOut, deadline);
         if (memeBought == 0) return;
 
-        uint256 hoodPortion = (totalHoodBought * weight) / BASIS_POINTS_DIVISOR;
-        if (hoodPortion == 0) return;
+        uint256 brkhoodPortion = (totalBrkhoodBought * weight) / BASIS_POINTS_DIVISOR;
+        if (brkhoodPortion == 0) return;
 
         _addMemeLiquidity(
             memeToken,
-            hoodPortion,
+            brkhoodPortion,
             memeBought,
-            minHoodLp,
+            minBrkhoodLp,
             minMemeLp,
             deadline
         );
@@ -320,9 +320,9 @@ contract BerkshireVault {
 
     function _buyAndPairMemes(
         uint256 ethForMemes,
-        uint256 totalHoodBought,
+        uint256 totalBrkhoodBought,
         uint256[] calldata minMemesOut,
-        uint256[] calldata minHoodLp,
+        uint256[] calldata minBrkhoodLp,
         uint256[] calldata minMemeLp,
         uint256 deadline
     ) internal {
@@ -330,10 +330,10 @@ contract BerkshireVault {
         for (uint256 i = 0; i < len; i++) {
             _processMemeAllocation(
                 ethForMemes,
-                totalHoodBought,
+                totalBrkhoodBought,
                 i,
                 minMemesOut[i],
-                minHoodLp[i],
+                minBrkhoodLp[i],
                 minMemeLp[i],
                 deadline
             );
@@ -357,7 +357,7 @@ contract BerkshireVault {
         uint256 totalWeight = 0;
         for (uint256 i = 0; i < newTokens.length; i++) {
             require(newTokens[i] != address(0), "Zero address token");
-            require(newTokens[i] != hoodToken, "Cannot allocate to hood token");
+            require(newTokens[i] != brkhoodToken, "Cannot allocate to BRKHOOD token");
             require(newWeights[i] > 0, "Weight must be > 0");
             totalWeight += newWeights[i];
         }
@@ -422,13 +422,31 @@ contract BerkshireVault {
     }
 
     /**
-     * @notice Allows the owner to update the Hood token address if a new token is deployed or migrated.
-     * @param newHoodToken Address of the new Hood token.
+     * @notice Allows the owner to update the BRKHOOD token address if a new token is deployed or migrated.
+     * @param newBrkhoodToken Address of the new BRKHOOD token.
      */
-    function setHoodToken(address newHoodToken) external onlyOwner {
-        require(newHoodToken != address(0), "Invalid hood token");
-        emit HoodTokenUpdated(hoodToken, newHoodToken);
-        hoodToken = newHoodToken;
+    function setBrkhoodToken(address newBrkhoodToken) public onlyOwner {
+        require(newBrkhoodToken != address(0), "Invalid BRKHOOD token");
+        emit BrkhoodTokenUpdated(brkhoodToken, newBrkhoodToken);
+        brkhoodToken = newBrkhoodToken;
+    }
+
+    /// @notice Convenience getter for the BRKHOOD token address
+    function brkhood() external view returns (address) {
+        return brkhoodToken;
+    }
+
+    /// @notice Backward compatibility aliases
+    function setHoodToken(address newBrkhoodToken) external onlyOwner {
+        setBrkhoodToken(newBrkhoodToken);
+    }
+
+    function hoodToken() external view returns (address) {
+        return brkhoodToken;
+    }
+
+    function totalHoodPurchased() external view returns (uint256) {
+        return totalBrkhoodPurchased;
     }
 
     // --- View Functions ---
