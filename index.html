@@ -111,7 +111,7 @@
         </button>
 
         <!-- Primary CTA: Trade on PONS Button -->
-        <a href="https://www.ponsfamily.com/launchpad/0xCB0D33f1A97046987eEDb8a0A907C62165A25f15" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 h-9 sm:h-10 px-4 rounded-xl text-xs font-bold whitespace-nowrap bg-gradient-to-r from-amber-400 via-gold-400 to-amber-500 hover:from-amber-300 hover:to-gold-300 text-omaha-950 shadow-md hover:shadow-gold-400/20 transition-all">
+        <a href="https://www.ponsfamily.com/launchpad/0xB1feD23B5527CD085f8C965737cFB13FF43Bc5E7" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 h-9 sm:h-10 px-4 rounded-xl text-xs font-bold whitespace-nowrap bg-gradient-to-r from-amber-400 via-gold-400 to-amber-500 hover:from-amber-300 hover:to-gold-300 text-omaha-950 shadow-md hover:shadow-gold-400/20 transition-all">
           <span>Trade on PONS</span>
           <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 stroke-[2.5] text-omaha-950 shrink-0"></i>
         </a>
@@ -168,7 +168,7 @@
 
           <!-- Hero Action Buttons -->
           <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4">
-            <a href="https://www.ponsfamily.com/launchpad/0xCB0D33f1A97046987eEDb8a0A907C62165A25f15" target="_blank" rel="noopener noreferrer" class="px-7 py-3.5 rounded-xl font-mono font-bold text-sm bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-300 hover:to-amber-400 text-omaha-950 shadow-xl transition-transform hover:-translate-y-0.5 flex items-center gap-2">
+            <a href="https://www.ponsfamily.com/launchpad/0xB1feD23B5527CD085f8C965737cFB13FF43Bc5E7" target="_blank" rel="noopener noreferrer" class="px-7 py-3.5 rounded-xl font-mono font-bold text-sm bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-300 hover:to-amber-400 text-omaha-950 shadow-xl transition-transform hover:-translate-y-0.5 flex items-center gap-2">
               <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
               <span>Buy $BRKHOOD on PONS</span>
             </a>
@@ -590,33 +590,48 @@
       <!-- Contract Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         
-        <div class="p-6 rounded-xl glass-panel border border-emerald-500/30">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-mono text-emerald-400 uppercase font-bold">The Iron Vault Contract</span>
-            <span class="px-2 py-0.5 text-[10px] font-mono bg-emerald-500/20 text-emerald-300 rounded border border-emerald-500/30">Verified</span>
+        <div class="p-6 rounded-xl glass-panel border border-emerald-500/30 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono text-emerald-400 uppercase font-bold">The Iron Vault Contract</span>
+              <span class="px-2 py-0.5 text-[10px] font-mono bg-emerald-500/20 text-emerald-300 rounded border border-emerald-500/30">Verified</span>
+            </div>
+            <h4 class="font-mono text-sm text-white font-bold mb-2">BerkshireVault.sol</h4>
+            <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+              Accumulates $MSTR trading fees, auto-executes buybacks of the 10 curated Day-1 memecoins, with 24h Timelock governance and permanent lock.
+            </p>
           </div>
-          <h4 class="font-mono text-sm text-white font-bold mb-2">BerkshireVault.sol</h4>
-          <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-            Contains the 50/50 swap engine, direct LP creation, 24-hour Timelock for meme weight updates, and zero withdrawal capabilities.
-          </p>
-          <div class="p-3 rounded bg-omaha-950 font-mono text-xs text-slate-300 flex items-center justify-between border border-emerald-900/50">
-            <span class="truncate">0x7e8D41C12999d3B93c9E3929e00049410F153F19</span>
-            <button onclick="navigator.clipboard.writeText('0x7e8D41C12999d3B93c9E3929e00049410F153F19'); alert('Vault address copied!')" class="ml-2 text-emerald-400 hover:text-emerald-300 text-xs">Copy</button>
+          <div>
+            <div class="p-3 rounded bg-omaha-950 font-mono text-xs text-slate-300 flex items-center justify-between border border-emerald-900/50">
+              <span class="truncate">0x91105C8ED3bF8A2E21d1514314f62fa5ea614352</span>
+              <button onclick="navigator.clipboard.writeText('0x91105C8ED3bF8A2E21d1514314f62fa5ea614352'); alert('Vault address copied!')" class="ml-2 text-emerald-400 hover:text-emerald-300 text-xs">Copy</button>
+            </div>
+            <div class="mt-2 text-right">
+              <a href="https://robinhoodchain.blockscout.com/address/0x91105C8ED3bF8A2E21d1514314f62fa5ea614352?tab=contract" target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono text-emerald-400 hover:text-emerald-300 underline">View Verified Contract on Explorer ↗</a>
+            </div>
           </div>
         </div>
 
-        <div class="p-6 rounded-xl glass-panel border border-emerald-500/30">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-mono text-gold-400 uppercase font-bold">Native Token Contract</span>
-            <span class="px-2 py-0.5 text-[10px] font-mono bg-amber-500/20 text-amber-300 rounded border border-amber-500/30">PONS Launchpad</span>
+        <div class="p-6 rounded-xl glass-panel border border-emerald-500/30 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono text-gold-400 uppercase font-bold">Native Token Contract</span>
+              <span class="px-2 py-0.5 text-[10px] font-mono bg-amber-500/20 text-amber-300 rounded border border-amber-500/30">PONS Launchpad</span>
+            </div>
+            <h4 class="font-mono text-sm text-white font-bold mb-2">$BRKHOOD (Berkshire Hoodaway)</h4>
+            <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+              Standard ERC-20 token launched via PONS with fees routed to the Iron Vault. Trading live on Robinhood Chain.
+            </p>
           </div>
-          <h4 class="font-mono text-sm text-white font-bold mb-2">$BRKHOOD (Berkshire Hoodaway)</h4>
-          <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-            Standard ERC-20 token launched via PONS with fees routed to the Iron Vault. Trading on Robinhood Chain AMM.
-          </p>
-          <div class="p-3 rounded bg-omaha-950 font-mono text-xs text-slate-300 flex items-center justify-between border border-emerald-900/50">
-            <span class="truncate">0xCB0D33f1A97046987eEDb8a0A907C62165A25f15</span>
-            <button onclick="navigator.clipboard.writeText('0xCB0D33f1A97046987eEDb8a0A907C62165A25f15'); alert('Token address copied!')" class="ml-2 text-gold-400 hover:text-gold-300 text-xs">Copy</button>
+          <div>
+            <div class="p-3 rounded bg-omaha-950 font-mono text-xs text-slate-300 flex items-center justify-between border border-emerald-900/50">
+              <span class="truncate">0xB1feD23B5527CD085f8C965737cFB13FF43Bc5E7</span>
+              <button onclick="navigator.clipboard.writeText('0xB1feD23B5527CD085f8C965737cFB13FF43Bc5E7'); alert('Token address copied!')" class="ml-2 text-gold-400 hover:text-gold-300 text-xs">Copy</button>
+            </div>
+            <div class="mt-2 flex items-center justify-between text-[11px] font-mono">
+              <a href="https://www.ponsfamily.com/launchpad/0xB1feD23B5527CD085f8C965737cFB13FF43Bc5E7" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 underline">Trade on PONS ↗</a>
+              <a href="https://robinhoodchain.blockscout.com/token/0xB1feD23B5527CD085f8C965737cFB13FF43Bc5E7" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-slate-300 underline">View on Explorer ↗</a>
+            </div>
           </div>
         </div>
 
@@ -733,7 +748,7 @@
           </svg>
           <span>X (@Berkshire_Hood)</span>
         </a>
-        <a href="https://www.ponsfamily.com/launchpad/0xCB0D33f1A97046987eEDb8a0A907C62165A25f15" target="_blank" rel="noopener noreferrer" class="hover:text-gold-400 flex items-center gap-1">
+        <a href="https://www.ponsfamily.com/launchpad/0xB1feD23B5527CD085f8C965737cFB13FF43Bc5E7" target="_blank" rel="noopener noreferrer" class="hover:text-gold-400 flex items-center gap-1">
           <i data-lucide="flame" class="w-4 h-4"></i> PONS Launchpad
         </a>
         <a href="#contracts" class="hover:text-gold-400 flex items-center gap-1">

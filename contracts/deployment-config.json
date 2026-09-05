@@ -3,9 +3,12 @@
   "rpcUrl": "https://rpc.mainnet.chain.robinhood.com/",
   "chainId": 4663,
   "blockExplorer": "https://robinhoodchain.blockscout.com",
+  "vaultContractAddress": "0x91105C8ED3bF8A2E21d1514314f62fa5ea614352",
+  "deploymentTxHash": "0x1abed4ffd5c4ae5e2824e5fb3866c9ee51a40418c76234835d3de12a9c9c3db1",
   "routerAddress": "0x8876789976decbfcbbbe364623c63652db8c0904",
   "quoteTokenAddress": "0xec262a75e413fafd0df80480274532c79d42da09",
-  "brkhoodTokenAddress": "0xCB0D33f1A97046987eEDb8a0A907C62165A25f15",
+  "brkhoodTokenAddress": "0xB1feD23B5527CD085f8C965737cFB13FF43Bc5E7",
+  "ponsLaunchpadUrl": "https://www.ponsfamily.com/launchpad/0xB1feD23B5527CD085f8C965737cFB13FF43Bc5E7",
   "minExecutionBalance": "0.1 MSTR (0.1 ether)",
   
   "dayOneInitialPortfolio": {

@@ -6,6 +6,9 @@
 // Initial State (Day-0 Real Launch State)
 const state = {
   ticker: "$BRKHOOD",
+  tokenAddress: "0xB1feD23B5527CD085f8C965737cFB13FF43Bc5E7",
+  vaultAddress: "0x91105C8ED3bF8A2E21d1514314f62fa5ea614352",
+  ponsLaunchpadUrl: "https://www.ponsfamily.com/launchpad/0xB1feD23B5527CD085f8C965737cFB13FF43Bc5E7",
   unallocatedEth: 0.0, // Initial 0 ETH (accumulates from live swap fees)
   ethPriceUsd: 3300,
   minExecutionThresholdUsd: 100,
@@ -230,7 +233,7 @@ function renderHoldings() {
             ${state.ticker} <span class="text-xs px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Native Treasury Token</span>
           </div>
           <div class="text-xs text-slate-400 font-mono">
-            <a href="https://www.ponsfamily.com/launchpad/0xCB0D33f1A97046987eEDb8a0A907C62165A25f15" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 underline decoration-emerald-500/40">0xCB0D...5f15</a> (Robinhood Chain / PONS)
+            <a href="https://www.ponsfamily.com/launchpad/0xB1feD23B5527CD085f8C965737cFB13FF43Bc5E7" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 underline decoration-emerald-500/40">0xB1fe...c5E7</a> (Robinhood Chain / PONS)
           </div>
         </div>
       </div>
