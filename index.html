@@ -38,7 +38,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css?v=2.0.2">
+  <link rel="stylesheet" href="styles.css?v=2.0.4">
 </head>
 
 <body class="bg-omaha-950 text-slate-100 selection:bg-emerald-500 selection:text-black">
@@ -638,36 +638,59 @@
       </div>
 
       <!-- FAQ Accordion -->
-      <div class="space-y-4 max-w-3xl mx-auto">
+      <div class="space-y-5 max-w-3xl mx-auto">
         
-        <div class="p-5 rounded-xl bg-omaha-900/50 border border-emerald-900/60">
-          <h4 class="font-bold text-white text-sm mb-2 flex items-center gap-2">
-            <i data-lucide="shield-alert" class="w-4 h-4 text-emerald-400"></i>
-            <span>Who can execute allocation changes in the 24-hour Timelock?</span>
+        <!-- TOP PRIORITY: Zero Withdrawals / Never Sell Guarantee -->
+        <div class="p-6 sm:p-7 rounded-2xl bg-gradient-to-r from-emerald-950/90 via-omaha-900 to-emerald-950/90 border-2 border-emerald-500/60 shadow-2xl relative overflow-hidden">
+          <div class="flex items-center justify-between mb-3">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-red-500/20 text-red-300 border border-red-500/40 shadow-sm">
+              <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+              <span>0% WITHDRAWALS • IMMUTABLE TREASURY</span>
+            </span>
+            <span class="text-xs font-mono text-emerald-400 font-bold">Rule No. 1: Never Sell</span>
+          </div>
+          <h4 class="font-serif-vintage font-bold text-white text-lg sm:text-xl mb-2 flex items-center gap-2.5">
+            <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400 shrink-0"></i>
+            <span>Can the dev, Warren, or anyone else withdraw tokens from the Vault?</span>
           </h4>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            <strong>Only the project owner / deployer.</strong> Both <code>proposeAllocations()</code> and <code>executeAllocations()</code> are protected by the <code>onlyOwner</code> modifier. Nobody else can propose or execute allocation changes. The 24-hour timelock exists so the community gets 24 hours of advance on-chain visibility before the owner finalizes an update.
+          <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
+            <strong class="text-emerald-400 font-bold">ABSOLUTELY NOT.</strong> There are literally zero withdrawal functions written in the smart contract bytecode. Neither Warren, the dev, nor anyone on Earth can withdraw funds, drain tokens, or unstake liquidity from the Vault. The treasury is a one-way street: fees enter, memes are bought, and liquidity is locked forever.
           </p>
         </div>
 
-        <div class="p-5 rounded-xl bg-omaha-900/50 border border-emerald-900/60">
-          <h4 class="font-bold text-white text-sm mb-2 flex items-center gap-2">
-            <i data-lucide="help-circle" class="w-4 h-4 text-emerald-400"></i>
-            <span>Why is there no MEV sandwich risk when triggering the buy?</span>
+        <!-- Fun Warren & Board Governance with High-Visibility 24h Timelock Callout -->
+        <div class="p-6 sm:p-7 rounded-2xl bg-omaha-900/80 border border-gold-400/40 shadow-xl">
+          <div class="flex items-center justify-between mb-3">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+              <i data-lucide="landmark" class="w-3.5 h-3.5 text-amber-400"></i>
+              <span>Board of Investors Governance</span>
+            </span>
+            <span class="text-xs font-mono text-gold-400">24h Timelock Guarded</span>
+          </div>
+          <h4 class="font-serif-vintage font-bold text-white text-lg sm:text-xl mb-2 flex items-center gap-2.5">
+            <i data-lucide="crown" class="w-5 h-5 text-gold-400 shrink-0"></i>
+            <span>Who proposes and executes allocation changes in the 24-hour Timelock?</span>
           </h4>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            The frontend interface queries current DEX quotes and calculates strict <strong>5% max slippage</strong> bounds (<code>amountOutMin</code>) before broadcasting the transaction. If an MEV bot attempts to front-run or sandwich the swap beyond 5%, the transaction automatically reverts, protecting 100% of the funds.
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
+            Only <strong>Warren Hood and the Board of Meme Investors</strong> hold the cryptographic keys to call <code>proposeAllocations()</code> and <code>executeAllocations()</code>. But the Board doesn't operate from an ivory tower — all new meme rebalancings and portfolio weights are scouted and debated directly through <strong>active community engagement on <a href="https://x.com/Berkshire_Hood" target="_blank" rel="noopener noreferrer" class="text-gold-400 hover:text-gold-300 underline font-semibold">X (@Berkshire_Hood)</a></strong> to ensure perfect alignment with the culture before anything is proposed on-chain.
           </p>
-        </div>
-
-        <div class="p-5 rounded-xl bg-omaha-900/50 border border-emerald-900/60">
-          <h4 class="font-bold text-white text-sm mb-2 flex items-center gap-2">
-            <i data-lucide="help-circle" class="w-4 h-4 text-emerald-400"></i>
-            <span>Can the dev or owner withdraw tokens from the vault?</span>
-          </h4>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            <strong>No.</strong> There are literally no withdrawal functions in the contract. Even the owner cannot extract tokens or unstake LP tokens. The code is immutable.
-          </p>
+          
+          <!-- High-Visibility 24-Hour Timelock Callout Box -->
+          <div class="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-amber-500/15 via-gold-500/10 to-amber-500/15 border-2 border-amber-400/50 shadow-inner">
+            <div class="flex items-start gap-3.5">
+              <div class="w-9 h-9 rounded-full bg-amber-400/20 border border-amber-400/50 flex items-center justify-center shrink-0 mt-0.5">
+                <i data-lucide="clock" class="w-4 h-4 text-amber-300"></i>
+              </div>
+              <div class="text-xs leading-relaxed">
+                <span class="font-mono uppercase tracking-wider text-amber-300 font-bold block mb-1 text-[11px] sm:text-xs">
+                  ★ The 24-Hour Timelock Transparency Guarantee ★
+                </span>
+                <span class="text-slate-200">
+                  Every proposed allocation change is forced to wait on-chain for <strong>exactly 24 hours</strong>. This gives the community <strong>24 hours of advance on-chain visibility</strong> to inspect, verify, and debate the proposal before the owner can finalize an update. Zero surprises, zero rug pulls, 100% transparent.
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -765,7 +788,7 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="app.js?v=2.0.2"></script>
+  <script src="app.js?v=2.0.4"></script>
   <script>
     // Initialize Lucide Icons
     lucide.createIcons();
