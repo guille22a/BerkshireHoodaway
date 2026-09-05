@@ -23,7 +23,7 @@ contract BerkshireVault {
     // --- State Variables ---
     address public immutable owner;
     address public brkhoodToken;
-    IUniswapV2Router02 public immutable router;
+    IUniswapV2Router02 public router;
 
     // Minimum balance required to trigger a batch run (e.g. 0.03 ETH =~ $100)
     uint256 public minExecutionBalance = 0.03 ether;
@@ -82,6 +82,7 @@ contract BerkshireVault {
     event AllocationProposalCanceled(uint256 indexed proposalId);
     event MinExecutionBalanceUpdated(uint256 newBalance);
     event BrkhoodTokenUpdated(address indexed oldToken, address indexed newToken);
+    event RouterUpdated(address indexed oldRouter, address indexed newRouter);
 
     // --- Modifiers ---
     modifier onlyOwner() {
@@ -389,6 +390,16 @@ contract BerkshireVault {
         require(newBrkhoodToken != address(0), "Invalid BRKHOOD token");
         emit BrkhoodTokenUpdated(brkhoodToken, newBrkhoodToken);
         brkhoodToken = newBrkhoodToken;
+    }
+
+    /**
+     * @notice Allows the owner to update the DEX router address.
+     * @param newRouter Address of the new DEX router.
+     */
+    function setRouter(address newRouter) external onlyOwner {
+        require(newRouter != address(0), "Invalid router");
+        emit RouterUpdated(address(router), newRouter);
+        router = IUniswapV2Router02(newRouter);
     }
 
     /// @notice Convenience getter for the BRKHOOD token address
