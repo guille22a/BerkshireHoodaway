@@ -1,0 +1,85 @@
+{
+  "network": "Robinhood Chain L2 (Arbitrum Nitro)",
+  "rpcUrl": "https://rpc.mainnet.chain.robinhood.com/",
+  "chainId": 4663,
+  "blockExplorer": "https://robinhoodchain.blockscout.com",
+  "routerAddress": "0xe33e9e479df8802cb0866d5d05258bec4cf62948",
+  "hoodTokenAddress": "PASTE_YOUR_DEPLOYED_BRKHOOD_TOKEN_ADDRESS_HERE",
+  
+  "dayOneInitialPortfolio": {
+    "description": "Day 1 curated meme basket (10 tokens at 10% each). Activates IMMEDIATELY upon deployment with zero timelock wait.",
+    "tokens": [
+      {
+        "name": "microduck",
+        "symbol": "$microduck",
+        "address": "0xD5f1afEA47b1A9eab414D2ee740cF1d6d039E725",
+        "weightBps": 1000,
+        "percentage": "10%"
+      },
+      {
+        "name": "Optimus",
+        "symbol": "$OPTIMUS",
+        "address": "0x0ff9072a1ead154d92c2d2fef16afba6028ce2b2",
+        "weightBps": 1000,
+        "percentage": "10%"
+      },
+      {
+        "name": "Artificial Inu",
+        "symbol": "$AI",
+        "address": "0x2e8c31162b855a2ffa90f6f8634643ad6f111e18",
+        "weightBps": 1000,
+        "percentage": "10%"
+      },
+      {
+        "name": "Cash Cat",
+        "symbol": "$CASHCAT",
+        "address": "0x020bfc650a365f8bb26819deaabf3e21291018b4",
+        "weightBps": 1000,
+        "percentage": "10%"
+      },
+      {
+        "name": "ROBINCAT",
+        "symbol": "$ROBINCAT",
+        "address": "0xded852de9fe9ba9b6f27f39e8e81cf851a5c79cc",
+        "weightBps": 1000,
+        "percentage": "10%"
+      },
+      {
+        "name": "Memory cow Moo",
+        "symbol": "$MOO",
+        "address": "0xd9db30bb0d2b8d2eae3826a1372117e058791e18",
+        "weightBps": 1000,
+        "percentage": "10%"
+      },
+      {
+        "name": "Cache Cow",
+        "symbol": "$CACHE",
+        "address": "0xafe41f4356c24f716111de1fbbc84e061d291e18",
+        "weightBps": 1000,
+        "percentage": "10%"
+      },
+      {
+        "name": "Touch Grass",
+        "symbol": "$GRASS",
+        "address": "0x16391c40e85fb2246a2c8c17bfa2594c5d3ef84b",
+        "weightBps": 1000,
+        "percentage": "10%"
+      },
+      {
+        "name": "Boner Coin",
+        "symbol": "$BONER",
+        "address": "0x98096d17e191b3da1d5f99a6d7b3584351b11e18",
+        "weightBps": 1000,
+        "percentage": "10%"
+      },
+      {
+        "name": "Pons",
+        "symbol": "$PONS",
+        "address": "0x39dbed3a2bd333467115de45665cc57f813c4571",
+        "weightBps": 1000,
+        "percentage": "10%"
+      }
+    ],
+    "totalBasisPointsRequired": 10000
+  }
+}

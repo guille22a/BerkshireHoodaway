@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Berkshire Hoodaway ($BRKHOOD) | The Never-Sell Meme Conglomerate on Robinhood Chain</title>
+  <meta name="description" content="Berkshire Hoodaway ($BRKHOOD) is the Warren Buffett meme coin on Robinhood Chain. Fees buy 50% $BRKHOOD and 50% curated memes, pair them into perpetual LPs, and lock them forever. Our favorite holding period is forever.">
+  <link rel="icon" type="image/svg+xml" href="assets/warren-hood.svg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: {
+              300: '#ffe6a7',
+              400: '#ffd166',
+              500: '#d4a373',
+              600: '#b07d62',
+            },
+            omaha: {
+              950: '#030a06',
+              900: '#081c15',
+              800: '#1b4332',
+              700: '#2d6a4f',
+              600: '#40916c',
+              500: '#52b788',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-omaha-950 text-slate-100 selection:bg-emerald-500 selection:text-black">
+
+  <!-- Top Marquee Ticker -->
+  <div class="bg-omaha-900 border-b border-gold-400/20 py-2 text-xs font-mono text-gold-300 ticker-wrap">
+    <div class="ticker-move">
+      <span class="mx-4">★ BERKSHIRE HOODAWAY ($BRKHOOD) ★</span>
+      <span class="mx-4 text-emerald-400">ROBINHOOD CHAIN L2 (ARBITRUM NITRO)</span>
+      <span class="mx-4">FEES SWALLOWED: 34.82 ETH ($114.9K+)</span>
+      <span class="mx-4 text-amber-300">HOLDING PERIOD: FOREVER</span>
+      <span class="mx-4">50% $BRKHOOD / 50% CURATED MEMES</span>
+      <span class="mx-4 text-red-400">ZERO WITHDRAWALS PERMITTED</span>
+      <span class="mx-4">24-HOUR OWNER TIMELOCK</span>
+      <span class="mx-4 text-emerald-400">LAUNCHING ON PONS LAUNCHPAD</span>
+      <span class="mx-4">RULE NO. 1: NEVER SELL</span>
+      <span class="mx-4">★ BERKSHIRE HOODAWAY ($BRKHOOD) ★</span>
+      <span class="mx-4 text-emerald-400">ROBINHOOD CHAIN L2 (ARBITRUM NITRO)</span>
+      <span class="mx-4">FEES SWALLOWED: 34.82 ETH ($114.9K+)</span>
+      <span class="mx-4 text-amber-300">HOLDING PERIOD: FOREVER</span>
+      <span class="mx-4">50% $BRKHOOD / 50% CURATED MEMES</span>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="sticky top-0 z-40 bg-omaha-950/90 backdrop-blur-md border-b border-emerald-900/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Crest -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-gold-400 p-0.5 bg-omaha-900 shadow-lg group-hover:scale-105 transition-transform">
+          <img src="assets/warren-hood.svg" alt="Warren Hood Logo" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <span class="font-serif-vintage text-xl sm:text-2xl font-black tracking-wide gold-gradient-text block">
+            BERKSHIRE HOODAWAY
+          </span>
+          <span class="font-mono text-[10px] tracking-widest text-emerald-400 block uppercase">
+            Robinhood Chain • $BRKHOOD
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <div class="hidden lg:flex items-center gap-4 xl:gap-6 text-sm font-medium text-slate-300">
+        <a href="#how-it-works" class="whitespace-nowrap hover:text-gold-400 transition-colors">How It Works</a>
+        <a href="#holdings" class="whitespace-nowrap hover:text-gold-400 transition-colors">Holdings</a>
+        <a href="#investment-board" class="whitespace-nowrap hover:text-gold-400 transition-colors flex items-center gap-1.5">
+          <span>Investment Board</span>
+          <span class="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-amber-500/15 text-amber-300 border border-amber-500/30">24h</span>
+        </a>
+        <a href="#tokenholder-statement" class="whitespace-nowrap hover:text-gold-400 transition-colors">Statement</a>
+        <a href="#contracts" class="whitespace-nowrap hover:text-gold-400 transition-colors">Contracts</a>
+      </div>
+
+      <!-- Header Action Buttons -->
+      <div class="flex items-center gap-2.5 shrink-0">
+        <!-- Secondary: Community Trigger Button -->
+        <button id="trigger-btn" class="hidden sm:inline-flex items-center justify-center gap-1.5 h-9 sm:h-10 px-3.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-emerald-950/70 hover:bg-emerald-900/90 text-emerald-300 border border-emerald-500/40 hover:border-emerald-400 transition-all shadow-sm">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+          <i data-lucide="zap" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+          <span>Trigger Vault</span>
+        </button>
+
+        <!-- Primary CTA: Trade on PONS Button -->
+        <a href="https://pons.fun" target="_blank" class="inline-flex items-center justify-center gap-1.5 h-9 sm:h-10 px-4 rounded-xl text-xs font-bold whitespace-nowrap bg-gradient-to-r from-amber-400 via-gold-400 to-amber-500 hover:from-amber-300 hover:to-gold-300 text-omaha-950 shadow-md hover:shadow-gold-400/20 transition-all">
+          <span>Trade on PONS</span>
+          <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 stroke-[2.5] text-omaha-950 shrink-0"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="relative overflow-hidden pt-12 pb-20 lg:pt-16 lg:pb-28">
+    <!-- Background Accents -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-emerald-600/10 rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="absolute -top-10 right-10 w-96 h-96 bg-amber-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Left Column: Copy & Value Proposition -->
+        <div class="lg:col-span-7 text-center lg:text-left">
+          
+          <!-- Pill Tag -->
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-omaha-900/90 border border-gold-400/30 text-xs font-mono text-gold-300 mb-6 shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span>The Warren Buffett of Robinhood Chain</span>
+          </div>
+
+          <!-- Main Title -->
+          <h1 class="font-serif-vintage text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
+            “Our Favorite <br>
+            <span class="gold-gradient-text">Holding Period</span> Is Forever.”
+          </h1>
+
+          <!-- Subtitle / Lore -->
+          <p class="text-base sm:text-lg text-slate-300 font-normal leading-relaxed mb-8 max-w-2xl">
+            Welcome to <strong class="text-emerald-400 font-semibold">Berkshire Hoodaway ($BRKHOOD)</strong>, the premier value-investing meme conglomerate. Protocol trading fees are permanently swallowed by the Vault to buy <span class="text-gold-300 font-semibold">50% $BRKHOOD</span> and <span class="text-gold-300 font-semibold">50% curated Robinhood Chain memecoins</span>, pair them into perpetual Liquidity Pools, and throw away the keys.
+          </p>
+
+          <!-- Warrenism Quote Box -->
+          <div class="p-4 sm:p-5 rounded-xl bg-omaha-900/80 border border-emerald-500/20 mb-8 max-w-2xl relative group">
+            <div class="flex items-start gap-3">
+              <i data-lucide="quote" class="w-6 h-6 text-gold-400 shrink-0 mt-1"></i>
+              <div class="flex-1">
+                <p id="warrenism-quote" class="font-serif-vintage italic text-slate-200 text-base sm:text-lg transition-opacity duration-300">
+                  “Our favorite holding period is forever. Especially for high-beta shitcoins.”
+                </p>
+                <div class="mt-2 text-xs font-mono text-emerald-400 flex items-center justify-between">
+                  <span>— Warren Hood, Chairman & CEO</span>
+                  <button id="refresh-quote-btn" class="hover:text-gold-300 underline flex items-center gap-1">
+                    <i data-lucide="refresh-cw" class="w-3 h-3"></i> More Warrenisms
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Action Buttons -->
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+            <a href="https://pons.fun" target="_blank" class="px-7 py-3.5 rounded-xl font-mono font-bold text-sm bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-300 hover:to-amber-400 text-omaha-950 shadow-xl transition-transform hover:-translate-y-0.5 flex items-center gap-2">
+              <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+              <span>Buy $BRKHOOD on PONS</span>
+            </a>
+            <a href="#holdings" class="px-7 py-3.5 rounded-xl font-mono font-bold text-sm bg-omaha-900 hover:bg-omaha-800 text-slate-200 border border-emerald-500/30 shadow-lg transition-all flex items-center gap-2">
+              <i data-lucide="vault" class="w-4 h-4 text-emerald-400"></i>
+              <span>Inspect The Iron Vault</span>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Animated Mascot Spotlight -->
+        <div class="lg:col-span-5 flex justify-center relative">
+          
+          <div class="relative w-80 sm:w-96 lg:w-[420px] aspect-square animate-float">
+            <!-- Glow Rings -->
+            <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-emerald-500/20 to-gold-400/20 filter blur-xl"></div>
+            
+            <!-- SVG Mascot Asset -->
+            <div class="relative w-full h-full rounded-full p-2 bg-gradient-to-b from-gold-400/40 via-emerald-800/30 to-omaha-950 shadow-2xl border-2 border-gold-400/50">
+              <img src="assets/warren-hood.svg" alt="Warren Hood - Berkshire Hoodaway Mascot" class="w-full h-full object-contain drop-shadow-2xl">
+            </div>
+
+            <!-- Floating Badge 1 -->
+            <div class="absolute -top-3 -left-3 px-3.5 py-1.5 rounded-lg bg-omaha-900/95 border border-gold-400/60 shadow-xl text-xs font-mono text-gold-300 flex items-center gap-1.5">
+              <span class="text-base">⏳</span>
+              <span>Holding: <strong>FOREVER</strong></span>
+            </div>
+
+            <!-- Floating Badge 2 -->
+            <div class="absolute -bottom-2 -right-3 px-3.5 py-1.5 rounded-lg bg-omaha-900/95 border border-emerald-400/60 shadow-xl text-xs font-mono text-emerald-400 flex items-center gap-1.5">
+              <span class="text-base">🔒</span>
+              <span><strong>0% Withdrawals</strong> (Keys Burned)</span>
+            </div>
+
+            <!-- Floating Badge 3 -->
+            <div class="absolute top-1/2 -right-6 px-3 py-1 rounded-lg bg-omaha-900/95 border border-amber-400/40 shadow-xl text-[11px] font-mono text-amber-300 hidden sm:flex items-center gap-1">
+              <span>50/50 Omaha Split</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Live Stats Ticker Bar -->
+      <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4">
+        
+        <div class="p-5 rounded-xl glass-panel border border-emerald-500/20">
+          <div class="text-xs font-mono text-slate-400 uppercase tracking-wider mb-1">Total Fees Swallowed</div>
+          <div class="text-2xl sm:text-3xl font-black text-white font-mono" id="total-swallowed-eth">34.82 ETH</div>
+          <div class="text-xs font-mono text-emerald-400 mt-1" id="total-swallowed-usd">$114,900+</div>
+        </div>
+
+        <div class="p-5 rounded-xl glass-panel border border-emerald-500/20">
+          <div class="text-xs font-mono text-slate-400 uppercase tracking-wider mb-1">Total Treasury Value</div>
+          <div class="text-2xl sm:text-3xl font-black text-gold-400 font-mono" id="total-vault-value">$206,900</div>
+          <div class="text-xs font-mono text-slate-400 mt-1">Locked in Perpetual LPs</div>
+        </div>
+
+        <div class="p-5 rounded-xl glass-panel border border-emerald-500/20">
+          <div class="text-xs font-mono text-slate-400 uppercase tracking-wider mb-1">Total Buy & Pool Runs</div>
+          <div class="text-2xl sm:text-3xl font-black text-white font-mono" id="total-runs">114</div>
+          <div class="text-xs font-mono text-emerald-400 mt-1">100% On-Chain & Verified</div>
+        </div>
+
+        <div class="p-5 rounded-xl glass-panel border border-emerald-500/20">
+          <div class="text-xs font-mono text-slate-400 uppercase tracking-wider mb-1">Permitted Withdrawals</div>
+          <div class="text-2xl sm:text-3xl font-black text-red-400 font-mono">0.00%</div>
+          <div class="text-xs font-mono text-slate-400 mt-1">Mathematical Lock (∞)</div>
+        </div>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Community One-Click Execution Trigger Banner -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+    <div class="rounded-2xl parchment-card p-6 sm:p-8 border border-gold-400/40 relative overflow-hidden shadow-2xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        
+        <div class="lg:col-span-8">
+          <div class="flex items-center gap-3 mb-2">
+            <span id="threshold-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Ready to Trigger (>$100 in Fees)
+            </span>
+            <span class="text-xs font-mono text-slate-400">Robinhood Chain DEX Execution</span>
+          </div>
+
+          <h3 class="font-serif-vintage text-2xl sm:text-3xl font-bold text-white mb-2">
+            Unallocated Vault Fees: <span class="text-gold-400 font-mono" id="unallocated-eth">0.0452 ETH</span> <span class="text-sm font-mono text-slate-400" id="unallocated-usd">($149.16)</span>
+          </h3>
+
+          <p class="text-sm text-slate-300 leading-relaxed max-w-2xl">
+            Anyone in the community can execute the 50/50 Buy & Pool once fees exceed <strong>$100</strong>. The contract swaps 50% for <strong>$BRKHOOD</strong> and 50% across <strong>curated memes</strong>, builds direct LPs, and locks them forever. Protected by <strong>5% max slippage</strong> against MEV sandwich attacks.
+          </p>
+        </div>
+
+        <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end">
+          <button onclick="document.getElementById('trigger-btn').click()" class="w-full py-4 px-6 rounded-xl font-mono font-black text-sm bg-gradient-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-300 text-omaha-950 shadow-xl transition-all flex items-center justify-center gap-2 animate-pulse-glow">
+            <i data-lucide="zap" class="w-4 h-4 fill-omaha-950"></i>
+            <span>TRIGGER VAULT BUY & POOL</span>
+          </button>
+          <div class="text-[11px] font-mono text-slate-400 text-center">
+            Gas paid on Robinhood Chain is &lt; $0.01 (Arbitrum Nitro)
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: How It Works -->
+  <section id="how-it-works" class="py-16 border-t border-emerald-900/40 bg-omaha-900/30 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 block mb-2">
+          DeFi Value Investing Architecture
+        </span>
+        <h2 class="font-serif-vintage text-3xl sm:text-4xl lg:text-5xl font-black text-white">
+          How The <span class="gold-gradient-text">Iron Vault</span> Operates
+        </h2>
+        <p class="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+          Inspired by Warren Buffett's lifelong compounding principle, but turbo-charged with Robinhood Chain’s 100ms blocks. Here is how every dollar of volume compounds forever.
+        </p>
+      </div>
+
+      <!-- 4-Step Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Step 1 -->
+        <div class="p-6 rounded-2xl glass-panel border border-emerald-500/20 relative group hover:border-gold-400/40 transition-all">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-400/30 flex items-center justify-center text-gold-400 font-mono font-black text-lg mb-4">
+            01
+          </div>
+          <h3 class="font-bold text-lg text-white mb-2 flex items-center gap-2">
+            <span>Fee Harvesting</span>
+            <i data-lucide="coins" class="w-4 h-4 text-emerald-400"></i>
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Every trade on Robinhood Chain / PONS generates protocol fees. Instead of being dumped by founders, 100% of these fees are directed straight into the <code>BerkshireVault</code> contract.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="p-6 rounded-2xl glass-panel border border-emerald-500/20 relative group hover:border-gold-400/40 transition-all">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-400/30 flex items-center justify-center text-gold-400 font-mono font-black text-lg mb-4">
+            02
+          </div>
+          <h3 class="font-bold text-lg text-white mb-2 flex items-center gap-2">
+            <span>The 50/50 Split</span>
+            <i data-lucide="pie-chart" class="w-4 h-4 text-amber-400"></i>
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            When triggered, the vault splits the ETH cleanly in half: <strong>50% buys $BRKHOOD</strong> to create constant buying pressure, and <strong>50% buys curated Robinhood Chain memecoins</strong>.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="p-6 rounded-2xl glass-panel border border-emerald-500/20 relative group hover:border-gold-400/40 transition-all">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-400/30 flex items-center justify-center text-gold-400 font-mono font-black text-lg mb-4">
+            03
+          </div>
+          <h3 class="font-bold text-lg text-white mb-2 flex items-center gap-2">
+            <span>Perpetual LPs</span>
+            <i data-lucide="layers" class="w-4 h-4 text-emerald-400"></i>
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            The Vault takes the purchased $BRKHOOD and pairs it directly with each curated meme, creating deep, liquid trading pairs (e.g. <code>$BRKHOOD / $PEPEHOOD</code>). Liquidity deepens with every single cycle.
+          </p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="p-6 rounded-2xl glass-panel border border-gold-400/30 relative group bg-gradient-to-b from-omaha-900 to-omaha-950 shadow-xl">
+          <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-400/40 flex items-center justify-center text-red-400 font-mono font-black text-lg mb-4">
+            04
+          </div>
+          <h3 class="font-bold text-lg text-white mb-2 flex items-center gap-2">
+            <span>The "Never Sell" Lock</span>
+            <i data-lucide="lock" class="w-4 h-4 text-gold-400"></i>
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            The Vault contains <strong>no withdraw function</strong>, <strong>no transfer function</strong>, and <strong>no sell function</strong>. All tokens and LP tokens are locked forever. Holding period: ∞.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Flow Diagram Graphic -->
+      <div class="mt-12 p-6 rounded-xl bg-omaha-950 border border-emerald-900/60 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-slate-300">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+          <span>Fees Ingested (ETH)</span>
+        </div>
+        <i data-lucide="arrow-right" class="w-4 h-4 text-gold-400 hidden sm:inline"></i>
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-1 rounded bg-amber-500/20 text-amber-300">50% $BRKHOOD Buy</span>
+          <span>+</span>
+          <span class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-300">50% Curated Memes Buy</span>
+        </div>
+        <i data-lucide="arrow-right" class="w-4 h-4 text-gold-400 hidden sm:inline"></i>
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-1 rounded bg-purple-500/20 text-purple-300">Pair into $BRKHOOD/Meme LPs</span>
+        </div>
+        <i data-lucide="arrow-right" class="w-4 h-4 text-gold-400 hidden sm:inline"></i>
+        <div class="flex items-center gap-2 text-red-400 font-bold">
+          <span>🔒 Trapped in Vault Forever</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION: Current Holdings -->
+  <section id="holdings" class="py-16 border-t border-emerald-900/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-gold-400 block mb-2">
+            Perpetual Treasury Inventory
+          </span>
+          <h2 class="font-serif-vintage text-3xl sm:text-4xl font-black text-white">
+            Current Vault Holdings
+          </h2>
+        </div>
+        <div class="text-right">
+          <div class="text-xs font-mono text-slate-400 uppercase">Total Locked Portfolio</div>
+          <div class="text-2xl sm:text-3xl font-black text-emerald-400 font-mono" id="holdings-total-val">$206,900</div>
+        </div>
+      </div>
+
+      <!-- Holdings Table -->
+      <div class="overflow-x-auto rounded-xl border border-emerald-500/20 bg-omaha-900/50 shadow-2xl">
+        <table class="w-full text-left text-sm text-slate-300">
+          <thead class="text-xs uppercase font-mono text-slate-400 bg-omaha-950/80 border-b border-emerald-900/40">
+            <tr>
+              <th scope="col" class="py-4 px-4">Asset / Token</th>
+              <th scope="col" class="py-4 px-4">Vault Balance</th>
+              <th scope="col" class="py-4 px-4">Estimated Value</th>
+              <th scope="col" class="py-4 px-4">Holding Policy</th>
+              <th scope="col" class="py-4 px-4">Paired LP Deployment</th>
+            </tr>
+          </thead>
+          <tbody id="holdings-table-body">
+            <!-- Populated dynamically by app.js -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Verification Callout -->
+      <div class="mt-6 p-4 rounded-xl bg-omaha-900/60 border border-emerald-500/20 flex items-center justify-between text-xs font-mono text-slate-400">
+        <div class="flex items-center gap-2">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+          <span>Verify On-Chain: All tokens reside at Vault address: <code>0x7e8D...3F19</code></span>
+        </div>
+        <a href="#contracts" class="text-gold-400 hover:underline">View Contract Code ↗</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION: Investment Board & 24h Timelock -->
+  <section id="investment-board" class="py-16 border-t border-emerald-900/40 bg-omaha-900/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-mono uppercase tracking-widest text-amber-300 block mb-2">
+          Governance & Allocation Engine
+        </span>
+        <h2 class="font-serif-vintage text-3xl sm:text-4xl lg:text-5xl font-black text-white">
+          Investment Board & <span class="gold-gradient-text">24h Timelock</span>
+        </h2>
+        <p class="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+          The curated memecoins purchased by the vault are strictly managed. Any change to the list or weighting triggers an on-chain <strong>24-hour Timelock event</strong>. Only the contract owner can propose or execute adjustments, ensuring the community has 24 hours of advance verification before changes take effect.
+        </p>
+      </div>
+
+      <!-- Current Curated Allocations Grid -->
+      <div class="mb-12">
+        <h3 class="text-sm font-mono uppercase text-slate-400 tracking-wider mb-4 flex items-center gap-2">
+          <i data-lucide="pie-chart" class="w-4 h-4 text-emerald-400"></i>
+          <span>Active Curated Meme Allocations (50% of Vault Fees)</span>
+        </h3>
+        <div id="investment-weights-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+
+      <!-- Active Timelock Proposal Card -->
+      <div class="rounded-2xl parchment-card p-6 sm:p-8 border border-amber-500/40 shadow-2xl relative">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gold-400/20">
+          
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-mono font-bold uppercase">
+                Active Timelock Event (Owner Only)
+              </span>
+              <span class="text-xs font-mono text-slate-400" id="proposal-id">#003</span>
+            </div>
+            <h4 class="font-serif-vintage text-xl sm:text-2xl font-bold text-white" id="proposal-desc">
+              Incorporate $HOODSHIBA at 15% and rebalance $PEPEHOOD to 30%
+            </h4>
+            <div class="text-xs font-mono text-slate-400 mt-1">
+              Proposed by: <span class="text-slate-300">0x438A...78c2 (Project Owner / Deployer)</span>
+            </div>
+          </div>
+
+          <!-- Countdown Box -->
+          <div class="bg-omaha-950/90 border border-amber-500/40 p-4 rounded-xl text-center min-w-[240px]">
+            <div class="text-[11px] font-mono text-slate-400 uppercase mb-1 flex items-center justify-center gap-1">
+              <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i>
+              <span>Timelock Countdown</span>
+            </div>
+            <div class="text-2xl sm:text-3xl font-mono font-black text-amber-300 tracking-wider" id="timelock-countdown">
+              14h 28m 45s
+            </div>
+            <div class="text-[10px] font-mono text-emerald-400 mt-1">
+              Strictly executable by Owner only after delay
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Proposed Changes Breakdown -->
+        <div class="pt-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div>
+            <span class="text-xs font-mono text-slate-400 uppercase tracking-wider block mb-3">
+              Proposed Target Weights:
+            </span>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 rounded bg-omaha-900 border border-emerald-500/30 text-xs font-mono text-emerald-300">
+                $PEPEHOOD (30%)
+              </span>
+              <span class="px-3 py-1 rounded bg-omaha-900 border border-emerald-500/30 text-xs font-mono text-emerald-300">
+                $DOGEHOOD (30%)
+              </span>
+              <span class="px-3 py-1 rounded bg-omaha-900 border border-emerald-500/30 text-xs font-mono text-emerald-300">
+                $ROBINCROP (15%)
+              </span>
+              <span class="px-3 py-1 rounded bg-omaha-900 border border-amber-400/40 text-xs font-mono text-gold-300 font-bold">
+                + $HOODSHIBA (15%) [NEW]
+              </span>
+              <span class="px-3 py-1 rounded bg-omaha-900 border border-emerald-500/30 text-xs font-mono text-emerald-300">
+                $PONSBUFF (10%)
+              </span>
+            </div>
+          </div>
+
+          <div>
+            <span class="text-xs font-mono text-slate-400 uppercase tracking-wider block mb-1">
+              On-Chain Calldata Hash:
+            </span>
+            <div class="p-2.5 rounded bg-omaha-950 font-mono text-[11px] text-slate-400 truncate border border-emerald-900/60" id="proposal-calldata">
+              0x892a7f100000000000000000000000000000000000000000000000000000000000000040...3a8b
+            </div>
+            <div class="text-[10px] font-mono text-slate-500 mt-1">
+              Guaranteed by smart contract code. Only the owner can execute or cancel this proposal.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- SECTION: Statement to Token Holders -->
+  <section id="tokenholder-statement" class="py-16 border-t border-emerald-900/40 bg-omaha-900/40">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="parchment-card p-8 sm:p-12 rounded-2xl shadow-2xl vintage-border-gold text-slate-200 leading-relaxed font-serif-vintage text-base sm:text-lg">
+        
+        <!-- Letterhead -->
+        <div class="text-center pb-8 mb-8 border-b-2 border-gold-400/30">
+          <h3 class="font-serif-vintage text-2xl sm:text-3xl font-black gold-gradient-text tracking-wider uppercase">
+            Berkshire Hoodaway
+          </h3>
+          <p class="font-mono text-xs text-gold-300 mt-1">
+            Robinhood Chain L2 • Autonomous Value Investing Engine • 100ms Blocks
+          </p>
+          <p class="font-mono text-xs text-slate-400 mt-0.5">
+            Statement to the Token Holders of $BRKHOOD
+          </p>
+        </div>
+
+        <p class="font-bold text-xl mb-4 text-white">
+          To the Token Holders of Berkshire Hoodaway:
+        </p>
+
+        <p class="mb-5">
+          Our gain in net asset value during the past cycle was modest in nominal terms, but extraordinary in conviction. When Charlie and I first inspected the Robinhood Chain, we were told that memecoins possessed an expected holding period of approximately four minutes and twenty seconds. 
+        </p>
+
+        <p class="mb-5">
+          We found this behavior appalling. In our philosophy, our favorite holding period has always been <em>forever</em>. Why should an investor sell a meme token simply because it has appreciated 4,000% or declined 92%? A true moat is forged not in balance sheets, but in the mathematical impossibility of pressing the sell button.
+        </p>
+
+        <div class="my-6 p-4 rounded-lg bg-omaha-950/80 border-l-4 border-gold-400 font-mono text-xs sm:text-sm text-gold-300">
+          “If you aren’t willing to hold a high-beta shitcoin for ten years, do not even think about holding it for ten minutes.” — Warren Hood
+        </div>
+
+        <p class="mb-5">
+          Therefore, we engineered the <strong>Iron Vault</strong>. Every time someone buys or sells <strong>$BRKHOOD</strong> on Robinhood Chain, fees are sent directly to the Iron Vault, where the Investment Board executes an immutable 50/50 split: <strong>50% into $BRKHOOD token buybacks</strong> to create perpetual buying pressure, and <strong>50% into a curated basket of top-tier Robinhood Chain memes</strong>. We then fuse them into deep direct liquidity pools and lock the LP tokens into a vault with <strong>zero withdrawal functions</strong>.
+        </p>
+
+        <p class="mb-5">
+          Wall Street analysts have asked us: <em>“Warren, what is your exit strategy?”</em> Our answer remains unchanged: <strong>There is none.</strong> The tokens and liquidity are trapped forever.
+        </p>
+
+        <div class="pt-6 border-t border-gold-400/20 flex items-center justify-between font-mono text-xs text-slate-400">
+          <div>
+            <p class="font-bold text-white font-serif-vintage text-base">Warren Hood</p>
+            <p>Chairman & Chief Meme Officer</p>
+          </div>
+          <div class="text-right">
+            <p>Robinhood Chain L2</p>
+            <p class="text-emerald-400">Holding Period: Forever</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION: Contracts & FAQ -->
+  <section id="contracts" class="py-16 border-t border-emerald-900/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 block mb-2">
+          Transparent Smart Contracts
+        </span>
+        <h2 class="font-serif-vintage text-3xl sm:text-4xl font-black text-white">
+          Verified On-Chain Architecture
+        </h2>
+        <p class="mt-4 text-slate-300 text-sm leading-relaxed">
+          The Vault contracts are deployed directly to Robinhood Chain (Arbitrum Nitro). Transparent, auditable, and immutable.
+        </p>
+      </div>
+
+      <!-- Contract Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        
+        <div class="p-6 rounded-xl glass-panel border border-emerald-500/30">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono text-emerald-400 uppercase font-bold">The Iron Vault Contract</span>
+            <span class="px-2 py-0.5 text-[10px] font-mono bg-emerald-500/20 text-emerald-300 rounded border border-emerald-500/30">Verified</span>
+          </div>
+          <h4 class="font-mono text-sm text-white font-bold mb-2">BerkshireVault.sol</h4>
+          <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+            Contains the 50/50 swap engine, direct LP creation, 24-hour Timelock for meme weight updates, and zero withdrawal capabilities.
+          </p>
+          <div class="p-3 rounded bg-omaha-950 font-mono text-xs text-slate-300 flex items-center justify-between border border-emerald-900/50">
+            <span class="truncate">0x7e8D41C12999d3B93c9E3929e00049410F153F19</span>
+            <button onclick="navigator.clipboard.writeText('0x7e8D41C12999d3B93c9E3929e00049410F153F19'); alert('Vault address copied!')" class="ml-2 text-emerald-400 hover:text-emerald-300 text-xs">Copy</button>
+          </div>
+        </div>
+
+        <div class="p-6 rounded-xl glass-panel border border-emerald-500/30">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono text-gold-400 uppercase font-bold">Native Token Contract</span>
+            <span class="px-2 py-0.5 text-[10px] font-mono bg-amber-500/20 text-amber-300 rounded border border-amber-500/30">PONS Launchpad</span>
+          </div>
+          <h4 class="font-mono text-sm text-white font-bold mb-2">$BRKHOOD (Berkshire Hoodaway)</h4>
+          <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+            Standard ERC-20 token launched via PONS with fees routed to the Iron Vault. Trading on Robinhood Chain AMM.
+          </p>
+          <div class="p-3 rounded bg-omaha-950 font-mono text-xs text-slate-300 flex items-center justify-between border border-emerald-900/50">
+            <span class="truncate">0x446B289e21820616e0A98319B4A4B642C97189a2</span>
+            <button onclick="navigator.clipboard.writeText('0x446B289e21820616e0A98319B4A4B642C97189a2'); alert('Token address copied!')" class="ml-2 text-gold-400 hover:text-gold-300 text-xs">Copy</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FAQ Accordion -->
+      <div class="space-y-4 max-w-3xl mx-auto">
+        
+        <div class="p-5 rounded-xl bg-omaha-900/50 border border-emerald-900/60">
+          <h4 class="font-bold text-white text-sm mb-2 flex items-center gap-2">
+            <i data-lucide="shield-alert" class="w-4 h-4 text-emerald-400"></i>
+            <span>Who can execute allocation changes in the 24-hour Timelock?</span>
+          </h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            <strong>Only the project owner / deployer.</strong> Both <code>proposeAllocations()</code> and <code>executeAllocations()</code> are protected by the <code>onlyOwner</code> modifier. Nobody else can propose or execute allocation changes. The 24-hour timelock exists so the community gets 24 hours of advance on-chain visibility before the owner finalizes an update.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-xl bg-omaha-900/50 border border-emerald-900/60">
+          <h4 class="font-bold text-white text-sm mb-2 flex items-center gap-2">
+            <i data-lucide="help-circle" class="w-4 h-4 text-emerald-400"></i>
+            <span>Why is there no MEV sandwich risk when triggering the buy?</span>
+          </h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            The frontend interface queries current DEX quotes and calculates strict <strong>5% max slippage</strong> bounds (<code>amountOutMin</code>) before broadcasting the transaction. If an MEV bot attempts to front-run or sandwich the swap beyond 5%, the transaction automatically reverts, protecting 100% of the funds.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-xl bg-omaha-900/50 border border-emerald-900/60">
+          <h4 class="font-bold text-white text-sm mb-2 flex items-center gap-2">
+            <i data-lucide="help-circle" class="w-4 h-4 text-emerald-400"></i>
+            <span>Can the dev or owner withdraw tokens from the vault?</span>
+          </h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            <strong>No.</strong> There are literally no withdrawal functions in the contract. Even the owner cannot extract tokens or unstake LP tokens. The code is immutable.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Execution Modal (Trigger Vault Buy) -->
+  <div id="execution-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-omaha-900 border-2 border-gold-400 rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
+      
+      <button id="close-modal-btn" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-400 flex items-center justify-center mx-auto mb-3 text-gold-400 font-mono font-black text-2xl">
+          ⚡
+        </div>
+        <h3 class="font-serif-vintage text-2xl font-bold text-white">
+          Execute Vault 50/50 Buy & Pool
+        </h3>
+        <p class="text-xs text-slate-400 mt-1 font-mono">
+          Threshold Met: 0.0452 ETH (~$149.16) available in Vault
+        </p>
+      </div>
+
+      <div class="space-y-3 mb-6 text-xs font-mono text-slate-300 bg-omaha-950 p-4 rounded-xl border border-emerald-900/60">
+        <div class="flex justify-between">
+          <span class="text-slate-400">Split 1 (50%):</span>
+          <span class="text-gold-300">0.0226 ETH → Buy $BRKHOOD</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-400">Split 2 (50%):</span>
+          <span class="text-emerald-400">0.0226 ETH → Buy 10 Curated Memes (10% each)</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-400">Max Slippage Protection:</span>
+          <span class="text-white font-bold">5.0% (Enforced)</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-400">LP Destination:</span>
+          <span class="text-red-400 font-bold">Vault address(this) [Locked Forever]</span>
+        </div>
+      </div>
+
+      <!-- Execution Status Log -->
+      <div id="exec-status-log" class="mb-6 max-h-36 overflow-y-auto bg-black/50 p-3 rounded-lg border border-emerald-950 empty:hidden"></div>
+
+      <div class="flex gap-3">
+        <button id="confirm-exec-btn" class="flex-1 py-3.5 rounded-xl font-mono font-bold text-sm bg-emerald-500 hover:bg-emerald-400 text-omaha-950 shadow-lg transition-all flex items-center justify-center gap-2">
+          <i data-lucide="play" class="w-4 h-4 fill-omaha-950"></i>
+          <span>Confirm & Execute Vault Buy</span>
+        </button>
+      </div>
+
+      <p class="text-[11px] font-mono text-slate-500 text-center mt-3">
+        Robinhood Chain L2 transaction. Completely permissionless trigger.
+      </p>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-gold-400/20 bg-omaha-950 py-12 text-slate-400 text-xs font-mono">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      
+      <div class="flex items-center gap-3">
+        <img src="assets/warren-hood.svg" alt="Warren Hood" class="w-8 h-8 rounded-full border border-gold-400">
+        <div>
+          <span class="font-serif-vintage text-base font-bold text-white block">BERKSHIRE HOODAWAY</span>
+          <span class="text-[10px] text-emerald-400">Domain: berkshirehood.fun • Holding Period: Forever</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-6 text-slate-300">
+        <a href="https://twitter.com" target="_blank" class="hover:text-gold-400 flex items-center gap-1">
+          <i data-lucide="twitter" class="w-4 h-4"></i> Twitter/X
+        </a>
+        <a href="https://telegram.org" target="_blank" class="hover:text-gold-400 flex items-center gap-1">
+          <i data-lucide="send" class="w-4 h-4"></i> Telegram
+        </a>
+        <a href="https://pons.fun" target="_blank" class="hover:text-gold-400 flex items-center gap-1">
+          <i data-lucide="flame" class="w-4 h-4"></i> PONS Launchpad
+        </a>
+        <a href="#contracts" class="hover:text-gold-400 flex items-center gap-1">
+          <i data-lucide="code" class="w-4 h-4"></i> Smart Contracts
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Parody Disclaimer -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-emerald-950 text-center text-slate-500 text-[11px] leading-relaxed">
+      Berkshire Hoodaway ($BRKHOOD) is a decentralized parody meme coin on Robinhood Chain. We have no affiliation with Berkshire Hathaway Inc., Warren Buffett, or Charlie Munger. Nothing herein constitutes financial or investment advice. Holding meme coins is high risk, high beta, and highly absurd.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>

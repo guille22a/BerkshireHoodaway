@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Gradients -->
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1b4332" stop-opacity="0.8"/>
+      <stop offset="60%" stop-color="#081c15" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#020d09" stop-opacity="1"/>
+    </radialGradient>
+    <linearGradient id="goldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe6a7"/>
+      <stop offset="25%" stop-color="#d4a373"/>
+      <stop offset="50%" stop-color="#ffd166"/>
+      <stop offset="75%" stop-color="#b07d62"/>
+      <stop offset="100%" stop-color="#ffe6a7"/>
+    </linearGradient>
+    <linearGradient id="featherGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#9d0208"/>
+      <stop offset="40%" stop-color="#d00000"/>
+      <stop offset="80%" stop-color="#dc2f02"/>
+      <stop offset="100%" stop-color="#ffba08"/>
+    </linearGradient>
+    <linearGradient id="hatGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2d6a4f"/>
+      <stop offset="50%" stop-color="#1b4332"/>
+      <stop offset="100%" stop-color="#081c15"/>
+    </linearGradient>
+    <linearGradient id="suitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2d6a4f"/>
+      <stop offset="60%" stop-color="#1b4332"/>
+      <stop offset="100%" stop-color="#0b2318"/>
+    </linearGradient>
+    <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffdfba"/>
+      <stop offset="100%" stop-color="#fcd5b4"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Background Medallion -->
+  <circle cx="250" cy="250" r="236" fill="url(#bgGlow)"/>
+  <circle cx="250" cy="250" r="230" fill="none" stroke="url(#goldBorder)" stroke-width="5" stroke-dasharray="6,4"/>
+  <circle cx="250" cy="250" r="222" fill="none" stroke="url(#goldBorder)" stroke-width="2"/>
+
+  <!-- Character Group with Drop Shadow -->
+  <g filter="url(#shadow)">
+    <!-- Shoulders & Investor Tweed Vest -->
+    <path d="M120,440 Q150,330 210,320 L290,320 Q350,330 380,440 Z" fill="url(#suitGrad)" stroke="#ffd166" stroke-width="2"/>
+    
+    <!-- Crisp White Dress Shirt & Collar -->
+    <polygon points="215,320 250,375 285,320 270,305 230,305" fill="#f8f9fa"/>
+    <polygon points="215,320 250,375 235,320" fill="#dee2e6"/>
+
+    <!-- Silk Bow Tie with Emerald Pin -->
+    <polygon points="230,318 270,318 265,335 235,335" fill="#dc2f02"/>
+    <polygon points="220,312 250,328 220,344" fill="#b7094c"/>
+    <polygon points="280,312 250,328 280,344" fill="#b7094c"/>
+    <circle cx="250" cy="328" r="6" fill="#ffd166" stroke="#fff" stroke-width="1.5"/>
+
+    <!-- Vest Buttons & Gold Pocket Chain -->
+    <circle cx="250" cy="390" r="5" fill="#ffd166"/>
+    <circle cx="250" cy="415" r="5" fill="#ffd166"/>
+    <!-- Gold Watch Chain swooping across vest -->
+    <path d="M250,390 Q300,410 325,385" fill="none" stroke="#ffd166" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- Neck -->
+    <rect x="232" y="270" width="36" height="40" rx="6" fill="#fcd5b4"/>
+
+    <!-- White Grandpa Hair & Sideburns -->
+    <path d="M165,220 Q150,260 170,290 Q185,275 180,240 Z" fill="#e9ecef"/>
+    <path d="M335,220 Q350,260 330,290 Q315,275 320,240 Z" fill="#e9ecef"/>
+
+    <!-- Head / Face -->
+    <ellipse cx="250" cy="235" rx="68" ry="74" fill="url(#skinGrad)"/>
+
+    <!-- Jowls & Friendly Warren Chin -->
+    <path d="M205,260 Q250,305 295,260" fill="none" stroke="#e8a598" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Smile Lines (Nasolabial folds) -->
+    <path d="M210,230 Q205,255 218,265" fill="none" stroke="#e8a598" stroke-width="2" stroke-linecap="round"/>
+    <path d="M290,230 Q295,255 282,265" fill="none" stroke="#e8a598" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Kindly Eyes & Laugh Wrinkles -->
+    <!-- Left Eye -->
+    <ellipse cx="222" cy="222" rx="9" ry="6" fill="#fff"/>
+    <circle cx="223" cy="222" r="4.5" fill="#2b2d42"/>
+    <circle cx="225" cy="220" r="1.5" fill="#fff"/>
+    <path d="M208,218 L200,216 M207,225 L198,226 M208,230 L201,234" stroke="#e8a598" stroke-width="1.5"/>
+
+    <!-- Right Eye with Monocle/Glasses -->
+    <ellipse cx="278" cy="222" rx="9" ry="6" fill="#fff"/>
+    <circle cx="277" cy="222" r="4.5" fill="#2b2d42"/>
+    <circle cx="279" cy="220" r="1.5" fill="#fff"/>
+    <path d="M292,218 L300,216 M293,225 L302,226 M292,230 L299,234" stroke="#e8a598" stroke-width="1.5"/>
+
+    <!-- Classic Wire-Rimmed Round Glasses -->
+    <circle cx="222" cy="222" r="19" fill="none" stroke="#ffd166" stroke-width="3"/>
+    <circle cx="278" cy="222" r="19" fill="none" stroke="#ffd166" stroke-width="3"/>
+    <path d="M241,220 Q250,215 259,220" fill="none" stroke="#ffd166" stroke-width="3"/>
+    <!-- Glasses Temples -->
+    <path d="M203,220 L176,214" stroke="#ffd166" stroke-width="2.5"/>
+    <path d="M297,220 L324,214" stroke="#ffd166" stroke-width="2.5"/>
+
+    <!-- Grandpa Nose -->
+    <path d="M250,214 Q256,238 258,242 Q250,248 242,242 Q244,238 250,214" fill="#fcd5b4" stroke="#e8a598" stroke-width="1.5"/>
+
+    <!-- Cheerful Charismatic Smirk -->
+    <path d="M222,260 Q250,280 278,260" fill="none" stroke="#9d0208" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M222,260 Q250,270 278,260" fill="#fff" stroke="#9d0208" stroke-width="1"/>
+
+    <!-- Rosy Cheeks -->
+    <ellipse cx="205" cy="245" rx="14" ry="8" fill="#ff758f" opacity="0.4"/>
+    <ellipse cx="295" cy="245" rx="14" ry="8" fill="#ff758f" opacity="0.4"/>
+
+    <!-- Bushy White Eyebrows -->
+    <path d="M205,206 Q224,196 238,206" fill="none" stroke="#f8f9fa" stroke-width="5" stroke-linecap="round"/>
+    <path d="M295,206 Q276,196 262,206" fill="none" stroke="#f8f9fa" stroke-width="5" stroke-linecap="round"/>
+
+    <!-- ================= ROBIN HOOD CAP ================= -->
+    <!-- Cap Body (Classic Medieval Folded Huntsman Cap) -->
+    <path d="M150,195 Q250,140 350,195 Q340,160 290,135 Q230,110 165,145 Q145,170 150,195 Z" fill="url(#hatGrad)" stroke="#1b4332" stroke-width="2"/>
+    <!-- Folded Brim with Gold Stitching -->
+    <path d="M155,195 Q250,165 345,195 L350,185 Q250,155 150,185 Z" fill="#40916c" stroke="#ffd166" stroke-width="1.5"/>
+    
+    <!-- Feather Quill Tuck Ribbon -->
+    <rect x="298" y="162" width="16" height="24" rx="4" transform="rotate(25 306 174)" fill="#dc2f02" stroke="#ffd166" stroke-width="1.5"/>
+
+    <!-- Iconic Bright Red Robin Hood Feather -->
+    <!-- Dramatic flowing arch feather -->
+    <path d="M305,170 Q370,120 405,45 Q360,75 320,130 Q305,150 305,170 Z" fill="url(#featherGrad)"/>
+    <!-- Feather spine -->
+    <path d="M305,170 Q365,115 405,45" fill="none" stroke="#ffe6a7" stroke-width="2" stroke-linecap="round"/>
+    <!-- Feather Barbs -->
+    <path d="M340,135 L332,128 M355,115 L346,107 M370,95 L360,86 M385,75 L375,67" stroke="#ffba08" stroke-width="1.5"/>
+
+    <!-- ================= SCROLL & COIN POUCH ACCESSORIES ================= -->
+    <!-- Left Hand Holding Ancient "Never Sell" Stock Scroll -->
+    <g transform="translate(70, 310) rotate(-15)">
+      <!-- Rolled Parchment -->
+      <rect x="0" y="0" width="70" height="95" rx="6" fill="#faedcd" stroke="#d4a373" stroke-width="2"/>
+      <ellipse cx="35" cy="0" rx="35" ry="8" fill="#e9d8a6" stroke="#d4a373" stroke-width="1.5"/>
+      <ellipse cx="35" cy="95" rx="35" ry="8" fill="#e9d8a6" stroke="#d4a373" stroke-width="1.5"/>
+      <!-- Green Mooning Candlestick Chart on Scroll -->
+      <path d="M10,70 L25,55 L40,62 L60,20" fill="none" stroke="#2dc653" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- Chart arrow -->
+      <polygon points="60,20 52,22 58,28" fill="#2dc653"/>
+      <!-- Text on scroll -->
+      <text x="35" y="86" font-family="'Times New Roman', serif" font-size="9" font-weight="bold" fill="#6b705c" text-anchor="middle">NEVER SELL</text>
+    </g>
+
+    <!-- Right Hand Holding Velvet Gold Coin Pouch -->
+    <g transform="translate(355, 315)">
+      <!-- Leather Pouch -->
+      <path d="M15,35 C0,45 0,75 25,85 C50,85 55,75 40,35 Z" fill="#b07d62" stroke="#6f1d1b" stroke-width="2"/>
+      <ellipse cx="28" cy="35" rx="14" ry="6" fill="#d4a373"/>
+      <!-- Tied string -->
+      <path d="M18,36 Q28,42 38,36" fill="none" stroke="#ffd166" stroke-width="2"/>
+      <!-- Gold Coins Overflowing -->
+      <circle cx="22" cy="26" r="10" fill="#ffd166" stroke="#b07d62" stroke-width="1.5"/>
+      <text x="22" y="30" font-family="sans-serif" font-size="8" font-weight="900" fill="#7f4f24" text-anchor="middle">₿</text>
+      
+      <circle cx="34" cy="22" r="9" fill="#ffe6a7" stroke="#b07d62" stroke-width="1.5"/>
+      <text x="34" y="26" font-family="sans-serif" font-size="7" font-weight="900" fill="#7f4f24" text-anchor="middle">H</text>
+      
+      <circle cx="28" cy="14" r="8" fill="#ffd166" stroke="#b07d62" stroke-width="1.5"/>
+      <text x="28" y="18" font-family="sans-serif" font-size="7" font-weight="900" fill="#7f4f24" text-anchor="middle">∞</text>
+    </g>
+  </g>
+
+  <!-- Outer Ring Inscriptions: Maximum Berkshire Parody -->
+  <path id="textPathTop" d="M 55,250 A 195,195 0 0,1 445,250" fill="none"/>
+  <text font-family="'Playfair Display', Georgia, serif" font-size="16" font-weight="bold" fill="#ffd166" letter-spacing="3">
+    <textPath href="#textPathTop" startOffset="50%" text-anchor="middle">
+      ★ BERKSHIRE HOODAWAY ★
+    </textPath>
+  </text>
+
+  <path id="textPathBottom" d="M 445,250 A 195,195 0 0,1 55,250" fill="none"/>
+  <text font-family="'Playfair Display', Georgia, serif" font-size="12" font-weight="bold" fill="#a7c957" letter-spacing="2">
+    <textPath href="#textPathBottom" startOffset="50%" text-anchor="middle">
+      • HOLDING PERIOD: FOREVER • ROBINHOOD CHAIN •
+    </textPath>
+  </text>
+</svg>

@@ -1,0 +1,157 @@
+/* Custom Styles for Berkshire Hoodaway (berkshirehood.fun) */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400;1,700&display=swap');
+
+:root {
+  --color-gold: #ffd166;
+  --color-gold-light: #ffe6a7;
+  --color-gold-dark: #b07d62;
+  --color-green-emerald: #10b981;
+  --color-green-rich: #1b4332;
+  --color-green-deep: #081c15;
+  --color-bg-dark: #070e0b;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--color-bg-dark);
+  color: #e2e8f0;
+  overflow-x: hidden;
+}
+
+.font-serif-vintage {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+.font-mono-code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Retro Wall Street Newspaper & Gold Accents */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #ffe6a7 0%, #ffd166 40%, #d4a373 70%, #ffba08 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.emerald-gradient-text {
+  background: linear-gradient(135deg, #a7f3d0 0%, #34d399 50%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.vintage-border {
+  border: 1px solid rgba(255, 209, 102, 0.25);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.05), inset 0 0 15px rgba(255, 209, 102, 0.03);
+}
+
+.vintage-border-gold {
+  border: 2px solid #d4a373;
+  outline: 1px dashed rgba(255, 209, 102, 0.5);
+  outline-offset: -4px;
+}
+
+/* Floating animation for mascot feather & badges */
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+.animate-float {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.25);
+    border-color: rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(16, 185, 129, 0.45);
+    border-color: rgba(52, 211, 153, 0.8);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+/* Ticker Ribbon */
+.ticker-wrap {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ticker-move {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker 35s linear infinite;
+}
+
+@keyframes ticker {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Omaha Shareholder Parchment Style */
+.parchment-card {
+  background: radial-gradient(circle at 50% 10%, #15291f 0%, #0d1e16 60%, #08140e 100%);
+  border: 1px solid rgba(212, 163, 115, 0.35);
+  position: relative;
+}
+
+.parchment-card::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border: 1px dashed rgba(255, 209, 102, 0.2);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Glassmorphism DeFi Cards */
+.glass-panel {
+  background: rgba(13, 30, 22, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(52, 211, 153, 0.15);
+}
+
+.glass-panel:hover {
+  border-color: rgba(52, 211, 153, 0.35);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #081c15;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2d6a4f;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #40916c;
+}
