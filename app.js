@@ -207,7 +207,6 @@ function renderLiveStats() {
   if (modalMemes) modalMemes.innerText = `${(state.unallocatedMstr * 0.5).toFixed(4)} MSTR (10 Memes)`;
 
   if (triggerBtn) {
-    triggerBtn.disabled = !isThresholdMet;
     if (isThresholdMet) {
       triggerBtn.classList.add("animate-pulse-glow");
     } else {
@@ -456,16 +455,19 @@ function initWarrenisms() {
 // Community One-Click Execution Modal & Execution Handler
 function setupExecutionTriggers() {
   const triggerBtn = document.getElementById("trigger-btn");
+  const heroTriggerBtn = document.getElementById("hero-trigger-btn");
   const modal = document.getElementById("execution-modal");
   const closeModalBtn = document.getElementById("close-modal-btn");
   const confirmExecBtn = document.getElementById("confirm-exec-btn");
   const execStatusEl = document.getElementById("exec-status-log");
 
-  if (triggerBtn && modal) {
-    triggerBtn.addEventListener("click", () => {
-      modal.classList.remove("hidden");
-    });
-  }
+  const openModal = (e) => {
+    if (e) e.preventDefault();
+    if (modal) modal.classList.remove("hidden");
+  };
+
+  if (triggerBtn) triggerBtn.addEventListener("click", openModal);
+  if (heroTriggerBtn) heroTriggerBtn.addEventListener("click", openModal);
 
   if (closeModalBtn && modal) {
     closeModalBtn.addEventListener("click", () => {
