@@ -452,18 +452,29 @@ function initWarrenisms() {
   setInterval(showNextQuote, 9000);
 }
 
-// Community One-Click Execution Modal & Execution Handler
+// Web3 Community & Owner Execution Modal Handler
 function setupExecutionTriggers() {
   const triggerBtn = document.getElementById("trigger-btn");
   const heroTriggerBtn = document.getElementById("hero-trigger-btn");
   const modal = document.getElementById("execution-modal");
   const closeModalBtn = document.getElementById("close-modal-btn");
-  const confirmExecBtn = document.getElementById("confirm-exec-btn");
+  const connectWalletBtn = document.getElementById("connect-wallet-btn");
+  const connectWalletText = document.getElementById("connect-wallet-text");
   const execStatusEl = document.getElementById("exec-status-log");
 
   const openModal = (e) => {
     if (e) e.preventDefault();
-    if (modal) modal.classList.remove("hidden");
+    if (modal) {
+      modal.classList.remove("hidden");
+      // Update dynamic amounts
+      const unallocEl = document.getElementById("modal-unalloc-mstr");
+      const brkhoodEl = document.getElementById("modal-brkhood-mstr");
+      const memesEl = document.getElementById("modal-memes-mstr");
+      const bal = state.unallocatedMstr;
+      if (unallocEl) unallocEl.innerText = `${bal.toFixed(4)} MSTR (~$${(bal * state.mstrPriceUsd).toFixed(2)})`;
+      if (brkhoodEl) brkhoodEl.innerText = `${(bal * 0.5).toFixed(4)} MSTR`;
+      if (memesEl) memesEl.innerText = `${(bal * 0.5).toFixed(4)} MSTR (10 Memes)`;
+    }
   };
 
   if (triggerBtn) triggerBtn.addEventListener("click", openModal);
@@ -475,70 +486,63 @@ function setupExecutionTriggers() {
     });
   }
 
-  if (confirmExecBtn) {
-    confirmExecBtn.addEventListener("click", async () => {
-      confirmExecBtn.disabled = true;
-      confirmExecBtn.innerText = "Executing On-Chain...";
-
-      const log = (msg) => {
+  // Real MetaMask / Web3 Wallet Connection
+  if (connectWalletBtn) {
+    connectWalletBtn.addEventListener("click", async () => {
+      if (typeof window.ethereum === "undefined") {
         if (execStatusEl) {
-          execStatusEl.innerHTML += `<div class="text-xs font-mono text-emerald-300 py-1">✓ ${msg}</div>`;
-          execStatusEl.scrollTop = execStatusEl.scrollHeight;
+          execStatusEl.innerHTML = `
+            <div class="text-amber-400 font-bold">⚠️ No Web3 Wallet Detected</div>
+            <div class="text-slate-300 mt-1">Please install MetaMask or open via Robinhood Chain Blockscout Write Contract tab directly.</div>
+          `;
         }
-      };
-
-      const currentBal = state.unallocatedMstr;
-      if (currentBal < state.minExecutionBalanceMstr) {
-        log(`Checking Robinhood Chain RPC & Vault Balance: ${currentBal.toFixed(4)} MSTR`);
-        log(`Required threshold: ${state.minExecutionBalanceMstr} MSTR (~$${(state.minExecutionBalanceMstr * state.mstrPriceUsd).toFixed(0)} USD)`);
-        log(`Accumulating fees from live PONS trades...`);
-        log(`💡 Quick Test: Transfer 0.1 MSTR directly to the Vault (${state.vaultAddress.slice(0, 10)}...) to trigger immediately!`);
-        confirmExecBtn.disabled = false;
-        confirmExecBtn.innerText = "Below 0.1 MSTR Threshold";
-        setTimeout(() => {
-          confirmExecBtn.innerText = "Confirm & Execute Vault Buy";
-        }, 3000);
         return;
       }
 
-      log(`Checking Robinhood Chain RPC & Vault Balance (${currentBal.toFixed(4)} MSTR)...`);
-      await new Promise(r => setTimeout(r, 700));
+      try {
+        connectWalletBtn.disabled = true;
+        if (connectWalletText) connectWalletText.innerText = "Connecting Wallet...";
 
-      log("Fetching DEX Quotes with Max 5% Slippage parameters...");
-      await new Promise(r => setTimeout(r, 800));
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        const account = accounts[0];
+        const chainId = await window.ethereum.request({ method: "eth_chainId" });
 
-      const halfMstr = (currentBal * 0.5).toFixed(4);
-      log(`Splitting 50% for ${state.ticker} (${halfMstr} MSTR) + 50% for Memecoins (${halfMstr} MSTR)...`);
-      await new Promise(r => setTimeout(r, 900));
+        const ownerAddress = "0x53bf851448571a7a1f190aca5f27a8d33e353df8";
+        const isOwner = account.toLowerCase() === ownerAddress.toLowerCase();
 
-      log(`DEX Swap completed: Acquired ${state.ticker} and basket of 10 curated memecoins.`);
-      await new Promise(r => setTimeout(r, 900));
+        if (connectWalletText) {
+          connectWalletText.innerText = `${account.slice(0, 6)}...${account.slice(-4)}`;
+        }
+        connectWalletBtn.classList.remove("bg-emerald-500", "hover:bg-emerald-400");
+        connectWalletBtn.classList.add("bg-omaha-900", "text-emerald-300", "border", "border-emerald-500/50");
 
-      log(`Calling router.addLiquidity() for 10 direct ${state.ticker}/Meme pairs...`);
-      await new Promise(r => setTimeout(r, 1000));
-
-      log("LP Tokens minted directly to Vault address(this).");
-      log("🔒 NEVER SELL POLICY ENFORCED: Zero withdrawal functions exist. Keys permanently thrown away!");
-      
-      // Update local state
-      state.totalFeesSwallowedMstr += currentBal;
-      state.totalRuns += 1;
-      state.unallocatedMstr = 0.0;
-      renderLiveStats();
-      renderHoldings();
-
-      confirmExecBtn.innerText = "Vault Buy & Pool Successful! 🚀";
-      confirmExecBtn.classList.remove("bg-emerald-500");
-      confirmExecBtn.classList.add("bg-amber-500", "text-black");
-
-      setTimeout(() => {
-        modal.classList.add("hidden");
-        confirmExecBtn.disabled = false;
-        confirmExecBtn.innerText = "Confirm & Execute Vault Buy";
-        confirmExecBtn.classList.remove("bg-amber-500", "text-black");
-        confirmExecBtn.classList.add("bg-emerald-500");
-        if (execStatusEl) execStatusEl.innerHTML = "";
-      }, 3500);
+        if (execStatusEl) {
+          if (isOwner) {
+            execStatusEl.innerHTML = `
+              <div class="text-gold-400 font-bold flex items-center gap-1.5">👑 Warren / Board Deployer Wallet Recognized</div>
+              <div class="text-emerald-300 mt-1">Wallet: <span class="font-mono">${account}</span></div>
+              <div class="text-slate-300 mt-1">
+                Vault has <strong>${state.unallocatedMstr.toFixed(4)} MSTR</strong> ready. Open the Blockscout explorer below to execute <code class="text-gold-300">executeRouterSwap()</code> or update token via <code class="text-gold-300">setBrkhoodToken()</code>!
+              </div>
+            `;
+          } else {
+            execStatusEl.innerHTML = `
+              <div class="text-emerald-400 font-bold">✓ Connected: ${account.slice(0, 8)}...${account.slice(-6)}</div>
+              <div class="text-slate-300 mt-1">Robinhood Chain ID: <span class="font-mono text-gold-400">${parseInt(chainId, 16) || 4663}</span></div>
+              <div class="text-slate-400 mt-1">
+                Vault has <strong>${state.unallocatedMstr.toFixed(4)} MSTR</strong> accumulated. Swaps are executed by the Board via router call with 5% slippage protection!
+              </div>
+            `;
+          }
+        }
+      } catch (err) {
+        console.error("MetaMask connection error:", err);
+        connectWalletBtn.disabled = false;
+        if (connectWalletText) connectWalletText.innerText = "Connect MetaMask";
+        if (execStatusEl) {
+          execStatusEl.innerHTML = `<div class="text-red-400">Connection rejected: ${err.message || err}</div>`;
+        }
+      }
     });
   }
 }
