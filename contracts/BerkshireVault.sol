@@ -22,7 +22,7 @@ import "./interfaces/IUniswapV2Router02.sol";
 contract BerkshireVault {
     // --- State Variables ---
     address public immutable owner;
-    address public immutable hoodToken;
+    address public hoodToken;
     IUniswapV2Router02 public immutable router;
 
     // Minimum balance required to trigger a batch run (e.g. 0.03 ETH =~ $100)
@@ -81,6 +81,7 @@ contract BerkshireVault {
     event AllocationExecuted(uint256 indexed proposalId);
     event AllocationProposalCanceled(uint256 indexed proposalId);
     event MinExecutionBalanceUpdated(uint256 newBalance);
+    event HoodTokenUpdated(address indexed oldToken, address indexed newToken);
 
     // --- Modifiers ---
     modifier onlyOwner() {
@@ -138,15 +139,6 @@ contract BerkshireVault {
         emit FeesReceived(msg.sender, msg.value, totalFeesSwallowed);
     }
 
-    // Parameter struct to eliminate EVM stack depth limits
-    struct ExecutionParams {
-        uint256 minHoodOut;
-        uint256[] minMemesOut;
-        uint256[] minHoodLp;
-        uint256[] minMemeLp;
-        uint256 deadline;
-    }
-
     // --- Public Automation / Execution ---
 
     /**
@@ -173,22 +165,20 @@ contract BerkshireVault {
 
         // 1. 50/50 Split
         uint256 ethForHood = currentBalance / 2;
-        uint256 ethForMemes = currentBalance - ethForHood;
 
         // 2. Buy $BRKHOOD with 50% of ETH
         uint256 hoodBought = _buyHood(ethForHood, minHoodOut, deadline);
         totalHoodPurchased += hoodBought;
 
         // 3. Buy Memecoins and add paired Liquidity
-        ExecutionParams memory params = ExecutionParams({
-            minHoodOut: minHoodOut,
-            minMemesOut: minMemesOut,
-            minHoodLp: minHoodLp,
-            minMemeLp: minMemeLp,
-            deadline: deadline
-        });
-
-        _buyAndPairMemes(ethForMemes, hoodBought, params);
+        _buyAndPairMemes(
+            currentBalance - ethForHood,
+            hoodBought,
+            minMemesOut,
+            minHoodLp,
+            minMemeLp,
+            deadline
+        );
 
         totalBuyRuns++;
         emit BatchBuyAndPoolExecuted(totalBuyRuns, currentBalance, hoodBought, block.timestamp);
@@ -212,53 +202,101 @@ contract BerkshireVault {
         return bought;
     }
 
+    function _swapMemeForEth(
+        address memeToken,
+        uint256 memeEth,
+        uint256 minOut,
+        uint256 deadline
+    ) internal returns (uint256) {
+        uint256 balBefore = IERC20(memeToken).balanceOf(address(this));
+        address[] memory path = new address[](2);
+        path[0] = router.WETH();
+        path[1] = memeToken;
+
+        router.swapExactETHForTokensSupportingFeeOnTransferTokens{value: memeEth}(
+            minOut,
+            path,
+            address(this),
+            deadline
+        );
+
+        return IERC20(memeToken).balanceOf(address(this)) - balBefore;
+    }
+
+    function _addMemeLiquidity(
+        address memeToken,
+        uint256 hoodAmount,
+        uint256 memeAmount,
+        uint256 minHood,
+        uint256 minMeme,
+        uint256 deadline
+    ) internal {
+        _safeApprove(hoodToken, address(router), hoodAmount);
+        _safeApprove(memeToken, address(router), memeAmount);
+
+        (, , uint256 liquidityCreated) = router.addLiquidity(
+            hoodToken,
+            memeToken,
+            hoodAmount,
+            memeAmount,
+            minHood,
+            minMeme,
+            address(this),
+            deadline
+        );
+
+        emit LiquidityAddedForMeme(memeToken, hoodAmount, memeAmount, liquidityCreated);
+    }
+
+    function _processMemeAllocation(
+        uint256 ethForMemes,
+        uint256 totalHoodBought,
+        uint256 index,
+        uint256 minMemeOut,
+        uint256 minHoodLp,
+        uint256 minMemeLp,
+        uint256 deadline
+    ) internal {
+        uint256 weight = memeWeights[index];
+        uint256 memeEth = (ethForMemes * weight) / BASIS_POINTS_DIVISOR;
+        if (memeEth == 0) return;
+
+        address memeToken = curatedMemes[index];
+        uint256 memeBought = _swapMemeForEth(memeToken, memeEth, minMemeOut, deadline);
+        if (memeBought == 0) return;
+
+        uint256 hoodPortion = (totalHoodBought * weight) / BASIS_POINTS_DIVISOR;
+        if (hoodPortion == 0) return;
+
+        _addMemeLiquidity(
+            memeToken,
+            hoodPortion,
+            memeBought,
+            minHoodLp,
+            minMemeLp,
+            deadline
+        );
+    }
+
     function _buyAndPairMemes(
         uint256 ethForMemes,
         uint256 totalHoodBought,
-        ExecutionParams memory params
+        uint256[] calldata minMemesOut,
+        uint256[] calldata minHoodLp,
+        uint256[] calldata minMemeLp,
+        uint256 deadline
     ) internal {
-        address weth = router.WETH();
-        uint256 memeCount = curatedMemes.length;
-
-        for (uint256 i = 0; i < memeCount; i++) {
-            uint256 memeEth = (ethForMemes * memeWeights[i]) / BASIS_POINTS_DIVISOR;
-            if (memeEth == 0) continue;
-
-            address memeToken = curatedMemes[i];
-            uint256 balBefore = IERC20(memeToken).balanceOf(address(this));
-
-            address[] memory path = new address[](2);
-            path[0] = weth;
-            path[1] = memeToken;
-
-            router.swapExactETHForTokensSupportingFeeOnTransferTokens{value: memeEth}(
-                params.minMemesOut[i],
-                path,
-                address(this),
-                params.deadline
+        uint256 len = curatedMemes.length;
+        for (uint256 i = 0; i < len; i++) {
+            _processMemeAllocation(
+                ethForMemes,
+                totalHoodBought,
+                i,
+                minMemesOut[i],
+                minHoodLp[i],
+                minMemeLp[i],
+                deadline
             );
-
-            uint256 memeBought = IERC20(memeToken).balanceOf(address(this)) - balBefore;
-            if (memeBought == 0) continue;
-
-            uint256 hoodPortion = (totalHoodBought * memeWeights[i]) / BASIS_POINTS_DIVISOR;
-            if (hoodPortion == 0) continue;
-
-            _safeApprove(hoodToken, address(router), hoodPortion);
-            _safeApprove(memeToken, address(router), memeBought);
-
-            (, , uint256 liquidityCreated) = router.addLiquidity(
-                hoodToken,
-                memeToken,
-                hoodPortion,
-                memeBought,
-                params.minHoodLp[i],
-                params.minMemeLp[i],
-                address(this),
-                params.deadline
-            );
-
-            emit LiquidityAddedForMeme(memeToken, hoodPortion, memeBought, liquidityCreated);
         }
     }
 
@@ -341,6 +379,16 @@ contract BerkshireVault {
         require(newBalance >= 0.005 ether, "Threshold too low");
         minExecutionBalance = newBalance;
         emit MinExecutionBalanceUpdated(newBalance);
+    }
+
+    /**
+     * @notice Allows the owner to update the Hood token address if a new token is deployed or migrated.
+     * @param newHoodToken Address of the new Hood token.
+     */
+    function setHoodToken(address newHoodToken) external onlyOwner {
+        require(newHoodToken != address(0), "Invalid hood token");
+        emit HoodTokenUpdated(hoodToken, newHoodToken);
+        hoodToken = newHoodToken;
     }
 
     // --- View Functions ---
