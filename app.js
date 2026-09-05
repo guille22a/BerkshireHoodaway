@@ -8,12 +8,13 @@ const state = {
   ticker: "$BRKHOOD",
   tokenAddress: "0xB1feD23B5527CD085f8C965737cFB13FF43Bc5E7",
   vaultAddress: "0x91105C8ED3bF8A2E21d1514314f62fa5ea614352",
+  quoteTokenAddress: "0xec262a75e413fafd0df80480274532c79d42da09", // $MSTR
   ponsLaunchpadUrl: "https://www.ponsfamily.com/launchpad/0xB1feD23B5527CD085f8C965737cFB13FF43Bc5E7",
-  unallocatedEth: 0.0, // Initial 0 ETH (accumulates from live swap fees)
-  ethPriceUsd: 3300,
-  minExecutionThresholdUsd: 100,
+  unallocatedMstr: 0.0, // Live MSTR fees accumulated in Vault
+  mstrPriceUsd: 135.0, // $MSTR Stock Token price USD
+  minExecutionBalanceMstr: 0.1, // 0.1 MSTR minimum trigger threshold
   slippagePct: 5.0, // 5% max slippage for low liquidity memecoins
-  totalFeesSwallowedEth: 0.0,
+  totalFeesSwallowedMstr: 0.0,
   totalHoodLocked: 0,
   totalRuns: 0,
   
@@ -164,36 +165,46 @@ document.addEventListener("DOMContentLoaded", () => {
   initTimelockCountdown();
   initWarrenisms();
   setupExecutionTriggers();
+  fetchLiveVaultState();
+  setInterval(fetchLiveVaultState, 10000); // Live poll on-chain every 10s
 });
 
 // Render Live Ticker & Stats
 function renderLiveStats() {
-  const unallocatedUsd = state.unallocatedEth * state.ethPriceUsd;
-  const isThresholdMet = unallocatedUsd >= state.minExecutionThresholdUsd;
+  const unallocatedUsd = state.unallocatedMstr * state.mstrPriceUsd;
+  const isThresholdMet = state.unallocatedMstr >= state.minExecutionBalanceMstr;
 
-  const unallocEthEl = document.getElementById("unallocated-eth");
+  const unallocMstrEl = document.getElementById("unallocated-mstr");
   const unallocUsdEl = document.getElementById("unallocated-usd");
   const thresholdBadge = document.getElementById("threshold-badge");
   const triggerBtn = document.getElementById("trigger-btn");
-  const totalSwallowedEth = document.getElementById("total-swallowed-eth");
+  const totalSwallowedMstr = document.getElementById("total-swallowed-mstr");
   const totalSwallowedUsd = document.getElementById("total-swallowed-usd");
   const totalRunsEl = document.getElementById("total-runs");
 
-  if (unallocEthEl) unallocEthEl.innerText = `${state.unallocatedEth.toFixed(4)} ETH`;
+  if (unallocMstrEl) unallocMstrEl.innerText = `${state.unallocatedMstr.toFixed(4)} MSTR`;
   if (unallocUsdEl) unallocUsdEl.innerText = `($${unallocatedUsd.toFixed(2)})`;
-  if (totalSwallowedEth) totalSwallowedEth.innerText = `${state.totalFeesSwallowedEth.toFixed(2)} ETH`;
-  if (totalSwallowedUsd) totalSwallowedUsd.innerText = `$${(state.totalFeesSwallowedEth * state.ethPriceUsd).toLocaleString()}`;
+  if (totalSwallowedMstr) totalSwallowedMstr.innerText = `${state.totalFeesSwallowedMstr.toFixed(2)} MSTR`;
+  if (totalSwallowedUsd) totalSwallowedUsd.innerText = `$${(state.totalFeesSwallowedMstr * state.mstrPriceUsd).toLocaleString()}`;
   if (totalRunsEl) totalRunsEl.innerText = state.totalRuns;
 
   if (thresholdBadge) {
     if (isThresholdMet) {
       thresholdBadge.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 animate-pulse";
-      thresholdBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Ready to Trigger (>$100 in Fees)`;
+      thresholdBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Ready to Trigger (≥ 0.1 MSTR in Fees)`;
     } else {
       thresholdBadge.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40";
-      thresholdBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> Accumulating Fees ($${unallocatedUsd.toFixed(2)} / $100)`;
+      thresholdBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> Accumulating Fees (${state.unallocatedMstr.toFixed(4)} / 0.1 MSTR)`;
     }
   }
+
+  // Update modal preview values
+  const modalUnalloc = document.getElementById("modal-unalloc-mstr");
+  const modalBrkhood = document.getElementById("modal-brkhood-mstr");
+  const modalMemes = document.getElementById("modal-memes-mstr");
+  if (modalUnalloc) modalUnalloc.innerText = `${state.unallocatedMstr.toFixed(4)} MSTR ($${unallocatedUsd.toFixed(2)})`;
+  if (modalBrkhood) modalBrkhood.innerText = `${(state.unallocatedMstr * 0.5).toFixed(4)} MSTR`;
+  if (modalMemes) modalMemes.innerText = `${(state.unallocatedMstr * 0.5).toFixed(4)} MSTR (10 Memes)`;
 
   if (triggerBtn) {
     triggerBtn.disabled = !isThresholdMet;
@@ -202,6 +213,37 @@ function renderLiveStats() {
     } else {
       triggerBtn.classList.remove("animate-pulse-glow");
     }
+  }
+}
+
+// Fetch Real On-Chain Vault State from Robinhood Chain RPC
+async function fetchLiveVaultState() {
+  try {
+    const rpc = 'https://rpc.mainnet.chain.robinhood.com/';
+    const vault = state.vaultAddress.toLowerCase().replace('0x', '');
+    const mstr = state.quoteTokenAddress;
+
+    // balanceOf(address) selector: 0x70a08231
+    const balData = '0x70a08231000000000000000000000000' + vault;
+
+    const res = await fetch(rpc, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'eth_call',
+        params: [{ to: mstr, data: balData }, 'latest']
+      })
+    });
+    const json = await res.json();
+    if (json.result && json.result !== '0x') {
+      const balBig = BigInt(json.result);
+      state.unallocatedMstr = Number(balBig) / 1e18;
+      renderLiveStats();
+    }
+  } catch (err) {
+    console.warn("Live on-chain vault polling notice:", err.message);
   }
 }
 
@@ -443,16 +485,31 @@ function setupExecutionTriggers() {
         }
       };
 
-      log("Checking Robinhood Chain RPC & Vault Balance (0.0452 ETH)...");
+      const currentBal = state.unallocatedMstr;
+      if (currentBal < state.minExecutionBalanceMstr) {
+        log(`Checking Robinhood Chain RPC & Vault Balance: ${currentBal.toFixed(4)} MSTR`);
+        log(`Required threshold: ${state.minExecutionBalanceMstr} MSTR (~$${(state.minExecutionBalanceMstr * state.mstrPriceUsd).toFixed(0)} USD)`);
+        log(`Accumulating fees from live PONS trades...`);
+        log(`💡 Quick Test: Transfer 0.1 MSTR directly to the Vault (${state.vaultAddress.slice(0, 10)}...) to trigger immediately!`);
+        confirmExecBtn.disabled = false;
+        confirmExecBtn.innerText = "Below 0.1 MSTR Threshold";
+        setTimeout(() => {
+          confirmExecBtn.innerText = "Confirm & Execute Vault Buy";
+        }, 3000);
+        return;
+      }
+
+      log(`Checking Robinhood Chain RPC & Vault Balance (${currentBal.toFixed(4)} MSTR)...`);
       await new Promise(r => setTimeout(r, 700));
 
       log("Fetching DEX Quotes with Max 5% Slippage parameters...");
       await new Promise(r => setTimeout(r, 800));
 
-      log(`Splitting 50% for ${state.ticker} (0.0226 ETH) + 50% for Memecoins (0.0226 ETH)...`);
+      const halfMstr = (currentBal * 0.5).toFixed(4);
+      log(`Splitting 50% for ${state.ticker} (${halfMstr} MSTR) + 50% for Memecoins (${halfMstr} MSTR)...`);
       await new Promise(r => setTimeout(r, 900));
 
-      log(`DEX Swap completed: Acquired 325,000 ${state.ticker} and basket of 10 curated memecoins.`);
+      log(`DEX Swap completed: Acquired ${state.ticker} and basket of 10 curated memecoins.`);
       await new Promise(r => setTimeout(r, 900));
 
       log(`Calling router.addLiquidity() for 10 direct ${state.ticker}/Meme pairs...`);
@@ -462,9 +519,9 @@ function setupExecutionTriggers() {
       log("🔒 NEVER SELL POLICY ENFORCED: Zero withdrawal functions exist. Keys permanently thrown away!");
       
       // Update local state
-      state.totalFeesSwallowedEth += state.unallocatedEth;
+      state.totalFeesSwallowedMstr += currentBal;
       state.totalRuns += 1;
-      state.unallocatedEth = 0.0031; // Reset below threshold
+      state.unallocatedMstr = 0.0;
       renderLiveStats();
       renderHoldings();
 

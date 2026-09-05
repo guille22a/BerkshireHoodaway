@@ -214,7 +214,7 @@
         
         <div class="p-5 rounded-xl glass-panel border border-emerald-500/20">
           <div class="text-xs font-mono text-slate-400 uppercase tracking-wider mb-1">Total Fees Swallowed</div>
-          <div class="text-2xl sm:text-3xl font-black text-white font-mono" id="total-swallowed-eth">0.00 ETH</div>
+          <div class="text-2xl sm:text-3xl font-black text-white font-mono" id="total-swallowed-mstr">0.00 MSTR</div>
           <div class="text-xs font-mono text-emerald-400 mt-1" id="total-swallowed-usd">$0.00</div>
         </div>
 
@@ -249,17 +249,17 @@
         <div class="lg:col-span-8">
           <div class="flex items-center gap-3 mb-2">
             <span id="threshold-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40">
-              <span class="w-2 h-2 rounded-full bg-amber-400"></span> Accumulating Swap Fees ($0.00 / $100)
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span> Accumulating Swap Fees (0.00 / 0.1 MSTR)
             </span>
             <span class="text-xs font-mono text-slate-400">Robinhood Chain DEX Execution</span>
           </div>
 
           <h3 class="font-serif-vintage text-2xl sm:text-3xl font-bold text-white mb-2">
-            Unallocated Vault Fees: <span class="text-gold-400 font-mono" id="unallocated-eth">0.0000 ETH</span> <span class="text-sm font-mono text-slate-400" id="unallocated-usd">($0.00)</span>
+            Unallocated Vault Fees: <span class="text-gold-400 font-mono" id="unallocated-mstr">0.0000 MSTR</span> <span class="text-sm font-mono text-slate-400" id="unallocated-usd">($0.00)</span>
           </h3>
 
           <p class="text-sm text-slate-300 leading-relaxed max-w-2xl">
-            Anyone in the community can execute the 50/50 Buy & Pool once fees exceed <strong>$100</strong>. The contract swaps 50% for <strong>$BRKHOOD</strong> and 50% across <strong>curated memes</strong>, builds direct LPs, and locks them forever. Protected by <strong>5% max slippage</strong> against MEV sandwich attacks.
+            Anyone in the community can execute the 50/50 Buy & Pool once fees reach <strong>0.1 MSTR</strong> ($MSTR MicroStrategy token on Robinhood Chain). The contract swaps 50% for <strong>$BRKHOOD</strong> and 50% across <strong>curated memes</strong>, builds direct LPs, and locks them forever. Protected by <strong>5% max slippage</strong> against MEV sandwich attacks.
           </p>
         </div>
 
@@ -321,7 +321,7 @@
             <i data-lucide="pie-chart" class="w-4 h-4 text-amber-400"></i>
           </h3>
           <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            When triggered, the vault splits the ETH cleanly in half: <strong>50% buys $BRKHOOD</strong> to create constant buying pressure, and <strong>50% buys curated Robinhood Chain memecoins</strong>.
+            When triggered, the vault splits the $MSTR fees cleanly in half: <strong>50% buys $BRKHOOD</strong> to create constant buying pressure, and <strong>50% buys curated Robinhood Chain memecoins</strong>.
           </p>
         </div>
 
@@ -359,7 +359,7 @@
       <div class="mt-12 p-6 rounded-xl bg-omaha-950 border border-emerald-900/60 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-slate-300">
         <div class="flex items-center gap-2">
           <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
-          <span>Fees Ingested (ETH)</span>
+          <span>Fees Ingested ($MSTR)</span>
         </div>
         <i data-lucide="arrow-right" class="w-4 h-4 text-gold-400 hidden sm:inline"></i>
         <div class="flex items-center gap-2">
@@ -697,15 +697,15 @@
       <div class="space-y-4 text-xs font-mono text-slate-300 mb-6">
         <div class="p-3 rounded bg-omaha-950 border border-emerald-900/40 flex justify-between">
           <span class="text-slate-400">Unallocated Vault Fees:</span>
-          <span class="text-gold-400 font-bold">0.0000 ETH ($0.00)</span>
+          <span class="text-gold-400 font-bold" id="modal-unalloc-mstr">0.0000 MSTR ($0.00)</span>
         </div>
         <div class="p-3 rounded bg-omaha-950 border border-emerald-900/40 flex justify-between">
           <span class="text-slate-400">50% $BRKHOOD Buyback:</span>
-          <span class="text-emerald-400 font-bold">0.0000 ETH</span>
+          <span class="text-emerald-400 font-bold" id="modal-brkhood-mstr">0.0000 MSTR</span>
         </div>
         <div class="p-3 rounded bg-omaha-950 border border-emerald-900/40 flex justify-between">
           <span class="text-slate-400">50% Curated Memes Buy:</span>
-          <span class="text-emerald-400 font-bold">0.0000 ETH (10 Memes)</span>
+          <span class="text-emerald-400 font-bold" id="modal-memes-mstr">0.0000 MSTR (10 Memes)</span>
         </div>
         <div class="p-3 rounded bg-omaha-950 border border-emerald-900/40 flex justify-between">
           <span class="text-slate-400">Max Allowed Slippage:</span>
